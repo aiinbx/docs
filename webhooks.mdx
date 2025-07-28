@@ -1,0 +1,163 @@
+---
+title: Webhooks Handling
+description: Receive real-time notifications when new emails arrive in AI Inbx.
+---
+
+Webhooks let your application **react the moment something happens in AI Inbx**. Currently we fire a webhook whenever a new inbound email is stored:
+
+- `inbound.email.received`
+
+> **Good to know**
+> • Webhooks are delivered at-least-once. Make your handler idempotent.
+
+<Steps>
+  <Step title="Create an HTTPS endpoint">
+    Your server just needs to accept **POST** requests with a JSON body. The example below uses **Next.js App Router** but any framework works – Flask, FastAPI, Express, Cloudflare Workers, …
+  </Step>
+  <Step title="Configure the webhook in your dashboard">
+    1. Go to [Webhooks](https://aiinbx.com/start/webhooks) <br/>
+    2. Click <kbd>New Webhook</kbd> → enter the public URL of your endpoint <br/>
+    3. *(Optional but recommended)* Enable **secret** signing – we’ll display a random secret once. Copy it somewhere safe.
+  </Step>
+  <Step title="Verify every request (recommended)">
+    When a secret is enabled we attach two headers:
+
+    - `X-AiInbx-Timestamp` – integer seconds since Unix epoch
+    - `X-AiInbx-Signature` – `sha256=` followed by an **HMAC-SHA256** signature calculated over `timestamp.body`
+
+    ```ts title="Verify signature (generic Node.js)"
+    import crypto from 'node:crypto'
+    import type { IncomingMessage } from 'http'
+
+    const isValidAiInbxSignature = (
+      req: IncomingMessage,
+      secret: string,
+      rawBody: string
+    ): boolean => {
+      const timestamp = req.headers['x-aiinbx-timestamp'] as string | undefined
+      const signature = req.headers['x-aiinbx-signature'] as string | undefined
+      if (!timestamp || !signature) return false
+
+      const expected =
+        'sha256=' +
+        crypto.createHmac('sha256', secret).update(`${timestamp}.${rawBody}`).digest('hex')
+
+      return crypto.timingSafeEqual(
+        Buffer.from(signature, 'utf8'),
+        Buffer.from(expected, 'utf8')
+      )
+    }
+    ```
+  </Step>
+  <Step title="Manage existing webhooks">
+    Your list of webhooks lives under [Webhooks](https://aiinbx.com/start/webhooks). From here you can:
+
+    - **Pause** deliveries temporarily and **resume** them later – useful while doing maintenance on your endpoint.
+    - **Rotate the secret** with a single click if you suspect it has leaked. We immediately stop using the old secret and display the new one once.
+  </Step>
+</Steps>
+
+## Example: Next.js App Router (Typescript)
+
+```ts title="app/api/ai-inbx-webhook/route.ts"
+import { NextRequest, NextResponse } from 'next/server'
+import crypto from 'node:crypto'
+
+type WebhookPayload = {
+  event: 'inbound.email.received'
+  data: {
+    email: unknown
+    organization: {
+      id: string
+      slug: string
+    }
+  }
+  attempt: number
+  timestamp: number
+}
+
+const AI_INBX_SECRET = process.env.AI_INBX_SECRET!
+
+const verifySignature = (
+  request: NextRequest,
+  rawBody: string
+): boolean => {
+  const timestamp = request.headers.get('x-aiinbx-timestamp') || ''
+  const signature = request.headers.get('x-aiinbx-signature') || ''
+
+  const expected =
+    'sha256=' +
+    crypto.createHmac('sha256', AI_INBX_SECRET).update(`${timestamp}.${rawBody}`).digest('hex')
+
+  return crypto.timingSafeEqual(
+    Buffer.from(signature),
+    Buffer.from(expected)
+  )
+}
+
+export async function POST(request: NextRequest) {
+  const rawBody = await request.text()
+
+  // ✅ Reject if the signature is invalid
+  if (!verifySignature(request, rawBody)) {
+    return NextResponse.json({ error: 'Invalid signature' }, { status: 401 })
+  }
+
+  const payload = JSON.parse(rawBody) as WebhookPayload
+  const {
+    data: { email },
+    attempt,
+    timestamp,
+  } = payload
+
+  // TODO: your business logic – store email, trigger agent, …
+  console.log('Received email', { email, attempt, timestamp })
+
+  return NextResponse.json({ received: true })
+}
+```
+
+### Payload structure
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `event` | string | Always `inbound.email.received` for now |
+| `data.email` | object | The full email record (see `GET /emails/{id}` in the API reference) |
+| `data.organization` | object | Organization context – helpful if you operate multiple orgs |
+| `attempt` | number | Delivery attempt (starts at `1`, increments on retries) |
+| `timestamp` | number | Unix epoch seconds of when we sent the webhook |
+
+<ResponseExample name="Sample payload">
+```json
+{
+  "event": "inbound.email.received",
+  "data": {
+    "email": {...},
+    "organization": {
+      "id": "org_123",
+      "slug": "my-agent"
+    }
+  },
+  "attempt": 1,
+  "timestamp": 1715100000
+}
+```
+</ResponseExample>
+
+### Failure handling & auto-pause
+
+We attempt to deliver each event **once**. A non-2xx response or a timeout after **30 seconds** counts as a failure.
+
+AI Inbx tracks `consecutiveFailures` for every webhook:
+
+1. `attempt` in the payload equals `consecutiveFailures + 1` – useful for debugging.
+2. After **3** consecutive failures the webhook is automatically **paused** (`isActive = false`).
+3. Paused webhooks stop receiving events until you resume them in the dashboard.
+
+Because we don’t retry the same event internally, make sure your endpoint is highly available or enqueue the payload on your side if you need guaranteed processing.
+
+---
+
+<Card title="Building an AI agent?" href="https://aiinbx.com" icon="bolt">
+AI Inbx is the drop-in email stack for agents and apps – send, receive and thread messages with a single API.
+</Card> 
