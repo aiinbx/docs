@@ -1,0 +1,66 @@
+---
+title: "TypeScript SDK"
+description: "Official TypeScript/JavaScript SDK for AI Inbx"
+---
+
+## Installation
+
+Install the AI Inbx TypeScript SDK using your preferred package manager:
+
+<CodeGroup>
+```bash npm
+npm install aiinbx
+```
+
+```bash yarn
+yarn add aiinbx
+```
+
+```bash pnpm
+pnpm add aiinbx
+```
+
+```bash bun
+bun add aiinbx
+```
+</CodeGroup>
+
+## Quick Start
+
+Initialize the client with your API key:
+
+```typescript
+import AIInbx from 'aiinbx';
+
+// If using the default environment variable AI_INBX_API_KEY
+const aiInbx = new AIInbx();
+
+// Or explicitly pass your API key
+// const aiInbx = new AIInbx({
+//   apiKey: 'your-api-key-here',
+// });
+
+// Search threads
+const response = await aiInbx.threads.search({});
+console.log(response.threads);
+
+const newestThread = response.threads[0];
+const newestEmail = newestThread.emails[0];
+
+// Reply to an email
+await aiInbx.emails.reply(newestEmail.id, {
+  from: "your-domain@example.com",
+  html: "<p>This is a test reply email</p>"
+});
+```
+
+## Complete Documentation
+
+For comprehensive documentation including:
+- Request & response types
+- Error handling
+- Advanced configuration
+- All available methods
+- TypeScript examples
+
+Visit the [complete TypeScript SDK documentation on npm](https://www.npmjs.com/package/aiinbx). 

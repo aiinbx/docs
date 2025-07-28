@@ -11,7 +11,7 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Docs",
         "groups": [
           {
             "group": "Getting started",
@@ -20,8 +20,15 @@
               "quickstart"
             ]
           },
+
           {
-            "group": "Guides",
+            "group": "SDKs",
+            "pages": [
+              "sdks/typescript"
+            ]
+          },
+          {
+            "group": "Webhooks",
             "pages": [
               "webhooks"
             ]
