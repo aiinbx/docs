@@ -44,8 +44,8 @@
         ]
       },
       {
-        "tab": "API Reference",
-        "openapi": "https://aiinbx.vercel.app/api/openapi-docs"
+        "tab": "SDK & API Reference",
+        "openapi": "https://app.stainless.com/api/spec/documented/ai-inbx/openapi.documented.yml"
       }
     ],
     "global": {
