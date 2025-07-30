@@ -123,6 +123,7 @@ These helpers:
 ```typescript title="app/api/aiinbx-webhook/route.ts"
 import { openai } from '@ai-sdk/openai';
 import { generateObject } from 'ai';
+import { z } from 'zod';
 import AIInbx from 'aiinbx';
 import {
   createNextRouteHandler,
@@ -138,10 +139,16 @@ export const POST = createNextRouteHandler({
     const thread = await aiInbx.threads.retrieve(email.threadId);
 
     const { object } = await generateObject({
-      model: openai('gpt-4o-mini'),
-      schema: { responseHtml: 'string' },
-      system: 'You are a helpful support agent for AI Inbx.',
-      prompt: `Thread so far: ${threadToLLMString(thread)}\nNew email: ${emailToLLMString(email)}`,
+      model: openai('gpt-4.1-mini'),
+      schema: z.object({
+        responseHtml: z.string(),
+      }),
+      system: `You are a helpful assistant that can gets incoming emails and should answer them as a human would.`,
+      prompt: `Here are the emails so far: ${threadToLLMString(thread)}
+
+Here is the new email: ${emailToLLMString(email)}
+
+Please answer the email as a human would.`,
     });
 
     await aiInbx.emails.reply(email.id, {
