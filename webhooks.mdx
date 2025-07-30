@@ -16,8 +16,10 @@ Webhooks let your application **react the moment something happens in AI Inbx**.
   </Step>
   <Step title="Configure the webhook in your dashboard">
     1. Go to [Webhooks](https://aiinbx.com/start/webhooks) <br/>
-    2. Click <kbd>New Webhook</kbd> → enter the public URL of your endpoint <br/>
-    3. *(Optional but recommended)* Enable **secret** signing – we’ll display a random secret once. Copy it somewhere safe.
+    2. Click <kbd>Add Webhook</kbd> → enter the public URL of your endpoint <br/>
+    3. *(Optional but recommended)* Enable **secret** signing – we’ll display a random secret **once**. Copy it immediately and set it as `AI_INBX_SECRET` in your environment.  
+       • The **secret switch is permanent** – you can’t turn it on/off later. Delete & recreate the webhook if you change your mind.  
+       • Lost or exposed the secret? Use **Rotate secret** from the webhook’s dropdown to invalidate the old one and get a new value.
   </Step>
   <Step title="Verify every request (recommended)">
     When a secret is enabled we attach two headers:
@@ -57,7 +59,35 @@ Webhooks let your application **react the moment something happens in AI Inbx**.
   </Step>
 </Steps>
 
-## Example: Next.js App Router (Typescript)
+## Example: Next.js App Router – SDK helper
+
+The easiest way to handle webhooks in **Next.js App Router** is the `createNextRouteHandler` helper that ships with the TypeScript SDK. It automatically:
+
+- Verifies the signature when `AI_INBX_SECRET` is set
+- Parses the JSON payload
+- Routes the event to the callback you specify
+
+> **Tip**: Your API route can live under any path (e.g., `/api/my-inbox-webhook`). Just make sure to use that same URL when configuring the webhook in the dashboard.
+
+```ts title="app/api/aiinbx-webhook/route.ts"
+import { createNextRouteHandler } from 'aiinbx/helpers'
+
+export const POST = createNextRouteHandler({
+  onInboundEmail: async ({ payload, isVerified }) => {
+    const { email } = payload.data
+
+    console.log('Received email', { email, isVerified })
+    // TODO: your business logic – store email, trigger agent, …
+    return Response.json({ received: true })
+  },
+})
+```
+
+> **Tip**: When no `AI_INBX_SECRET` is configured the helper still works but `isVerified` will be `undefined`.
+
+---
+
+### Example: Next.js App Router – manual verification (advanced)
 
 ```ts title="app/api/ai-inbx-webhook/route.ts"
 import { NextRequest, NextResponse } from 'next/server'

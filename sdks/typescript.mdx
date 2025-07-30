@@ -56,6 +56,106 @@ await aiInbx.emails.reply(newestEmail.id, {
 });
 ```
 
+## Built-in Helpers
+
+### 1. Next.js webhook handler
+
+`createNextRouteHandler()` generates a ready-to-use `POST` handler that:
+
+- Validates the request signature using the `AI_INBX_SECRET` env variable.
+- Parses the webhook payload and routes it to the correct callback.
+
+<Steps>
+
+1. **Add an API route** (any path works, e.g., `app/api/aiinbx-webhook/route.ts`):
+   ```typescript
+   import { createNextRouteHandler } from 'aiinbx/helpers';
+
+   export const POST = createNextRouteHandler({
+     onInboundEmail: async ({ payload, isVerified }) => {
+       const { email } = payload.data;
+
+       console.log('Inbound email', { email, isVerified });
+       return Response.json({ ok: true });
+     },
+   });
+   ```
+
+2. **Set `AI_INBX_SECRET`** in your environment. The value is shown **once** when you enable secrets during webhook creation.  
+   • Secret on/off can’t be toggled later—delete & recreate the webhook to change.  
+   • Lost or exposed the secret? Click **Rotate secret** in the webhook dropdown to generate a fresh value and invalidate the old one.
+
+3. **Add the webhook URL** (`/api/aiinbx-webhook`) in the dashboard.
+
+</Steps>
+
+#### Handler parameters
+
+<ParamField name="payload" type="WebhookDataBase">Raw payload parsed from the request body.</ParamField>
+<ParamField name="isVerified" type="boolean | undefined">`true` if the signature matches, `false` if it doesn’t, `undefined` when no secret is configured.</ParamField>
+<ParamField name="request" type="NextRequest">Original Next.js request object.</ParamField>
+<ParamField name="rawBody" type="string">Unparsed request body – useful for your own verification logic.</ParamField>
+
+---
+
+### 2. LLM-friendly formatting
+
+Use `emailToLLMString()` and `threadToLLMString()` to transform rich email objects into compact, XML-ish strings optimised for Large Language Models:
+
+```typescript
+import {
+  emailToLLMString,
+  threadToLLMString,
+} from 'aiinbx/helpers';
+
+const emailPrompt = emailToLLMString(email);
+const threadPrompt = threadToLLMString(thread);
+```
+
+These helpers:
+
+- Keep only fields relevant for reasoning (addresses, subject, text, etc.).
+- Preserve structure with lightweight XML-like tags.
+- Return a single string ready to drop into your prompts.
+
+#### Full example: AI-powered support bot
+
+```typescript title="app/api/aiinbx-webhook/route.ts"
+import { openai } from '@ai-sdk/openai';
+import { generateObject } from 'ai';
+import AIInbx from 'aiinbx';
+import {
+  createNextRouteHandler,
+  emailToLLMString,
+  threadToLLMString,
+} from 'aiinbx/helpers';
+
+const aiInbx = new AIInbx();
+
+export const POST = createNextRouteHandler({
+  onInboundEmail: async ({ payload }) => {
+    const { email } = payload.data;
+    const thread = await aiInbx.threads.retrieve(email.threadId);
+
+    const { object } = await generateObject({
+      model: openai('gpt-4o-mini'),
+      schema: { responseHtml: 'string' },
+      system: 'You are a helpful support agent for AI Inbx.',
+      prompt: `Thread so far: ${threadToLLMString(thread)}\nNew email: ${emailToLLMString(email)}`,
+    });
+
+    await aiInbx.emails.reply(email.id, {
+      from: 'support@your-domain.com',
+      html: object.responseHtml,
+    });
+
+    return Response.json({ sent: true });
+  },
+});
+```
+
+> ℹ️ The example above is completely serverless and needs no additional infrastructure.
+
 ## Complete Documentation
 
 For comprehensive documentation including:
