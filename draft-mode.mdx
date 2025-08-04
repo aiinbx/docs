@@ -1,0 +1,90 @@
+---
+title: "Human in the Loop"
+description: "Save emails as drafts for human-in-the-loop approval before sending"
+---
+
+Need a human to eyeball every outbound email before it leaves your system? **Draft Mode** lets you create emails and replies that stay safely in AI Inbx until someone approves them.
+
+E-mails created in Draft Mode:
+
+- Appear in the dashboard with the status **DRAFT**.
+- Can be edited and finally **Send** (or deleted) by any team member with access.
+- Never hit the recipient’s inbox until you manually **Send**.
+
+Drafts are great for:
+
+- Early-stage agents that still hallucinate.
+- Sensitive communication that always needs human approval.
+
+## 1. Draft a single email
+
+Add `"is_draft": true` to the request body of **either** `/emails/send` or `/emails/{emailId}/reply`.
+
+<CodeGroup>
+```bash curl
+curl -X POST "https://aiinbx.com/api/v1/emails/send" \
+  -H "Authorization: Bearer $AI_INBX_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "to": "customer@example.com",
+    "from": "hello@yourdomain.com",
+    "subject": "Quote for your request",
+    "html": "<p>Here is the draft of your quote…</p>",
+    "is_draft": true
+}'
+```
+
+```typescript
+import AIInbx from "aiinbx";
+
+const aiInbx = new AIInbx();
+
+await aiInbx.emails.send({
+  to: "customer@example.com",
+  from: "hello@yourdomain.com",
+  subject: "Quote for your request",
+  html: "<p>Here is the draft of your quote…</p>",
+  is_draft: true,
+});
+```
+</CodeGroup>
+
+### Response
+
+The JSON response structure is the same, but `messageId` will be `"DRAFT-{uuid}"` instead of a real message ID:
+
+<ResponseExample>
+```json
+{
+  "emailId": "email_abc123",
+  "threadId": "thread_xyz789",
+  "messageId": "DRAFT-a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+}
+```
+</ResponseExample>
+
+## 2. Draft Mode for an entire API key
+
+Toggling *Forced Draft Mode* on an API key forces *every* send or reply made with that key to be saved as a draft—no (and not sent) regardless of the `is_draft` field of the api call.
+
+<Steps>
+  <Step title="Open your API key details">
+    Go to [API Keys](https://aiinbx.com/start/api-keys) and click the three dots on the API key you want to edit. This opens a dropdown menu.
+  </Step>
+  <Step title="Enable Draft Mode">
+    Toggle between the modes. When the draft override is ON, every email created with this API key will be stored as a draft for manual review, even if your request sets is_draft to false. Disable it to allow normal sending.
+  </Step>
+  <Step title="Review & send drafts">
+    Drafts appear in your [Threads](https://aiinbx.com/start/threads). Open a thread, see the draft, make adjustments if needed, and hit **Send** when you’re ready.
+  </Step>
+</Steps>
+
+---
+
+### API reference additions
+
+<ParamField name="is_draft" type="boolean" optional>
+When `true`, the email is stored with status **DRAFT** instead of being delivered. Defaults to `false`.
+</ParamField>
+
+<ResponseField name="status" type="'DRAFT' | ...">Returns **DRAFT** when the email is created in Draft Mode.</ResponseField>

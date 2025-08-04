@@ -19,7 +19,11 @@ Get your AI Inbx integration running in minutes. This guide walks you through cr
   </Step>
 
   <Step title="Get your API key">
-    Navigate to [API Keys](https://aiinbx.com/start/api-keys) in your dashboard and create a new API key. Keep this secure - you'll use it to authenticate all API requests.
+    Navigate to [API Keys](https://aiinbx.com/start/api-keys) in your dashboard and create a new API key. Keep this secure – you'll use it to authenticate all API requests.
+
+    <Note>
+      Need human-in-the-loop approval? Enable **Draft Mode** for the key. Every send or reply created with that key will be stored as a draft instead of being delivered until you manually send it in the dashboard.
+    </Note>
   </Step>
 
   <Step title="Send your first email">
@@ -33,7 +37,8 @@ Get your AI Inbx integration running in minutes. This guide walks you through cr
         "to": "recipient@example.com",
         "from": "hello@yourdomain.com",
         "subject": "Hello from AI Inbx!",
-        "html": "<p>This is my first email sent through AI Inbx.</p>"
+        "html": "<p>This is my first email sent through AI Inbx.</p>",
+        "is_draft": true
       }'
     ```
 
