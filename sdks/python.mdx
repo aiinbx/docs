@@ -1,0 +1,99 @@
+---
+title: "Python SDK"
+description: "Official Python SDK for AI Inbx"
+---
+
+📦 **[View on PyPI](https://pypi.org/project/aiinbx/)**
+
+## Installation
+
+Install the AI Inbx Python SDK using your preferred tool:
+
+<CodeGroup>
+```bash pip
+pip install aiinbx
+```
+
+```bash pipenv
+pipenv install aiinbx
+```
+
+```bash poetry
+poetry add aiinbx
+```
+
+```bash uv
+uv add aiinbx
+```
+</CodeGroup>
+
+## Quick Start
+
+Initialize the client with your API key, search threads, then reply to the newest email in the newest thread:
+
+```python
+import os
+from aiinbx import AIInbx
+
+client = AIInbx(
+    api_key=os.environ.get("AI_INBX_API_KEY"),  # default when unset too
+)
+
+# Search threads (newest first by default)
+search = client.threads.search()
+newest_thread = search.threads[0]
+
+# Retrieve full thread with emails
+thread = client.threads.retrieve(newest_thread.id)
+newest_email = thread.emails[-1]
+
+# Reply to the email
+client.emails.reply(newest_email.id, {
+    "from": "support@your-domain.com",
+    "html": "<p>This is a test reply email</p>",
+})
+```
+
+Tip: Prefer environment variables (e.g., with python-dotenv) instead of hardcoding your API key.
+
+## Async usage
+
+Use the asynchronous client for high-concurrency workloads:
+
+```python
+import os
+import asyncio
+from aiinbx import AsyncAIInbx
+
+client = AsyncAIInbx(
+    api_key=os.environ.get("AI_INBX_API_KEY"),
+)
+
+
+async def main() -> None:
+    search = await client.threads.search()
+    newest_thread = search.threads[0]
+
+    thread = await client.threads.retrieve(newest_thread.id)
+    newest_email = thread.emails[-1]
+
+    await client.emails.reply(newest_email.id, {
+        "from": "support@your-domain.com",
+        "html": "<p>This is a test reply email</p>",
+    })
+
+
+asyncio.run(main())
+```
+## Complete Documentation
+
+For comprehensive documentation including:
+- Request & response types
+- Error handling
+- Advanced configuration
+- All available methods
+- Python examples
+
+Visit the **[complete Python SDK documentation on PyPI](https://pypi.org/project/aiinbx/)**.
+
+

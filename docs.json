@@ -25,7 +25,8 @@
           {
             "group": "SDKs",
             "pages": [
-              "sdks/typescript"
+              "sdks/typescript",
+              "sdks/python"
             ]
           },
           {
