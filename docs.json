@@ -18,7 +18,8 @@
             "pages": [
               "index",
               "quickstart",
-              "draft-mode"
+              "draft-mode",
+              "forward"
             ]
           },
 
