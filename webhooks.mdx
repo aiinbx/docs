@@ -3,9 +3,17 @@ title: Receive Emails
 description: Receive real-time notifications when new emails arrive in AI Inbx.
 ---
 
-Webhooks let your application **react the moment something happens in AI Inbx**. Currently we fire a webhook whenever a new inbound email is stored:
+Webhooks let your application **react the moment something happens in AI Inbx**. We deliver events for inbound and outbound email lifecycle changes.
 
-- `inbound.email.received`
+### Events
+
+- [`inbound.email.received`](/api-reference/inbound-email-received)
+- [`outbound.email.delivered`](/api-reference/outbound-email-delivered)
+- [`outbound.email.bounced`](/api-reference/outbound-email-bounced)
+- [`outbound.email.complained`](/api-reference/outbound-email-complained)
+- [`outbound.email.rejected`](/api-reference/outbound-email-rejected)
+- [`outbound.email.opened`](/api-reference/outbound-email-opened)
+- [`outbound.email.link_clicked`](/api-reference/outbound-email-link-clicked)
 
 > **Good to know**
 > • Webhooks are delivered at-least-once. Make your handler idempotent.
@@ -151,7 +159,7 @@ export async function POST(request: NextRequest) {
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `event` | string | Always `inbound.email.received` for now |
+| `event` | string | One of the events listed above |
 | `data.email` | object | The full email record (see `GET /emails/{id}` in the API reference) |
 | `data.organization` | object | Organization context – helpful if you operate multiple orgs |
 | `attempt` | number | Delivery attempt (starts at `1`, increments on retries) |

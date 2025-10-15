@@ -3,18 +3,18 @@ title: Quickstart
 description: Get started with AI Inbx in under 5 minutes
 ---
 
-Get your AI Inbx integration running in minutes. This guide walks you through creating your account, verifying a domain, and sending your first email.
+Get your AI Inbx integration running in minutes. This guide walks you through creating your account, using your instant organization domain, and sending your first email.
 
 <Steps>
   <Step title="Sign up and create your organization">
     Visit [aiinbx.com](https://aiinbx.com) to create your account and spin up your first organization. This is where you'll manage domains, API keys, and webhooks.
   </Step>
 
-  <Step title="Connect your domain">
-    Before you can send or receive emails, you need to connect a domain you own. Head to [Domains](https://aiinbx.com/start/domains) in your dashboard, add your domain, and follow the DNS instructions to verify ownership.
+  <Step title="Your instant organization domain">
+    Every organization gets its own domain automatically: <code>orgslug.aiinbx.app</code>. It's ready the moment you create the org – no DNS setup required. You can start sending and receiving right away.
 
     <Note>
-      You can only send emails from verified domains. Make sure to complete the DNS verification process.
+      Want to use your brand domain? You can connect it anytime under [Domains](https://aiinbx.com/start/domains) and continue using both.
     </Note>
   </Step>
 
@@ -35,10 +35,9 @@ Get your AI Inbx integration running in minutes. This guide walks you through cr
       -H "Content-Type: application/json" \
       -d '{
         "to": "recipient@example.com",
-        "from": "hello@yourdomain.com",
+        "from": "hello@your-org-slug.aiinbx.app",
         "subject": "Hello from AI Inbx!",
-        "html": "<p>This is my first email sent through AI Inbx.</p>",
-        "is_draft": true
+        "html": "<p>This is my first email sent through AI Inbx.</p>"
       }'
     ```
 
@@ -54,7 +53,7 @@ Get your AI Inbx integration running in minutes. This guide walks you through cr
   </Step>
 
   <Step title="Explore your dashboard">
-    Check out your [Threads](https://aiinbx.com/start/threads) to see your conversations, monitor [Metrics](https://aiinbx.com/start/metrics), and configure [Webhooks](https://aiinbx.com/start/webhooks) for real-time **incoming-email** notifications.
+    Check out your [Threads](https://aiinbx.com/start/threads) to see your conversations, monitor [Metrics](https://aiinbx.com/start/metrics), and configure [Webhooks](https://aiinbx.com/start/webhooks) for real-time notifications like inbound and outbound events.
   </Step>
 </Steps>
 
