@@ -195,3 +195,4 @@ This repository is generated from the live docs. Issues are welcome; edits get p
 ## Other
 
 - [AI Inbx API](api/endpoints/README.md)
+- [undefined](skill.md)
