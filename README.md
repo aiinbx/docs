@@ -60,6 +60,7 @@ This repository is generated from the live docs. Issues are welcome; edits get p
   - [MCP server](mcp/README.md)
   - [MCP tools](mcp/tools.md)
   - [CLI](cli.md)
+  - [Agent skills](skills.md)
   - [Give your agent an inbox](guides/agent-inbox.md)
   - [Documentation for agents](reference/agents.md)
 - SDKs

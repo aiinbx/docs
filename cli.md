@@ -258,10 +258,10 @@ Or skip the login and pass a key: `AI_INBX_API_KEY=... aiinbx emails list`.
 
 `aiinbx commands` prints the whole command tree as JSON, with every argument and flag and the API operation behind each command. An agent can read it once instead of parsing `--help`.
 
-An agent skill ships with the CLI. It covers the non-interactive rules, auth, and the `listen`, `wait` and `doctor` workflows:
+The `aiinbx-cli` [agent skill](skills.md) covers the non-interactive rules, auth, and the `listen`, `wait` and `doctor` workflows:
 
 ```sh
-npx skills add aiinbx/cli
+npx skills add aiinbx/skills --skill aiinbx-cli
 ```
 ## In CI
 

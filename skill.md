@@ -153,6 +153,7 @@ This skill points you at the AI Inbx docs, at https://docs.aiinbx.com/. When a t
 - [MCP server](https://docs.aiinbx.com/mcp.md): Run AI Inbx from Claude, ChatGPT, Cursor, VS Code, Codex or any MCP client, or give it an inbox of its own: two servers, signed in as you or with an API key.
 - [MCP tools](https://docs.aiinbx.com/mcp/tools.md): Every tool the AI Inbx MCP servers offer, with its arguments and what a client is told about it before it runs.
 - [CLI](https://docs.aiinbx.com/cli.md): The aiinbx command line: send and read mail, call every API resource, forward webhooks to localhost without a tunnel, and check a domain's DNS.
+- [Agent skills](https://docs.aiinbx.com/skills.md): Agent skills for AI Inbx: let a coding agent set up the CLI, sign in, wire sending and receiving into your app, and verify one email and its reply end to end.
 - [Give your agent an inbox](https://docs.aiinbx.com/guides/agent-inbox.md): Connect Claude Code, Cursor or the aiinbx CLI to an inbox — an email address of its own that it sends from and reads, and nothing else in your workspace.
 - [Documentation for agents](https://docs.aiinbx.com/reference/agents.md): Machine-readable docs for coding agents: llms.txt, Markdown copies of every page, the OpenAPI document, and the rules for implementing AI Inbx.
 

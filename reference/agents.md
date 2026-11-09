@@ -6,6 +6,8 @@ Machine-readable docs for coding agents: llms.txt, Markdown copies of every page
 
 Use these resources when implementing AI Inbx with a coding agent. The same documentation is available as HTML for readers and Markdown for automated retrieval.
 
+To have a coding agent do the whole setup, hand it the [agent skills](../skills.md) instead of these pages.
+
 ## Sources
 
 | Resource | Purpose |

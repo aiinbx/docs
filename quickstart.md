@@ -6,7 +6,7 @@ Get started with AI Inbx: add a sending domain, send your first email with the S
 
 This guide sends an email from your domain and receives a reply. You need an AI Inbx workspace, access to your domain's DNS, and a recipient address you control. DNS verification can take time; there is no fixed completion time for this step.
 
-To use an existing Gmail or Outlook account without changing DNS, start with [Mailboxes](guides/mailboxes.md).
+To use an existing Gmail or Outlook account without changing DNS, start with [Mailboxes](guides/mailboxes.md). To have a coding agent do the setup in your project, hand it the [agent skills](skills.md).
 
 ## 1. Create an API key
 
