@@ -122,7 +122,7 @@ This skill points you at the AI Inbx docs, at https://docs.aiinbx.com/. When a t
 #### Events
 
 - [Event reference](https://docs.aiinbx.com/webhooks/events.md): Every AI Inbx webhook event type, the envelope they share, what each one means, and how to handle email, thread, domain and mailbox events.
-- [email.received](https://docs.aiinbx.com/webhooks/events/email-received.md): email.received fires once per inbound message, already matched onto its thread. The event most AI Inbx applications are built around.
+- [email.received](https://docs.aiinbx.com/webhooks/events/email-received.md): email.received fires for every inbound message, already matched onto its thread, and names the addresses of yours it arrived at. The event most AI Inbx applications are built around.
 - [email.sent](https://docs.aiinbx.com/webhooks/events/email-sent.md): email.sent fires when a message is handed to the mail provider: acceptance, not delivery. A full endpoint gets the whole email with it.
 - [email.delivered](https://docs.aiinbx.com/webhooks/events/email-delivered.md): email.delivered fires when the receiving server accepts a message, per recipient. It does not prove inbox placement or that anyone read it.
 - [email.bounced](https://docs.aiinbx.com/webhooks/events/email-bounced.md): email.bounced fires when delivery fails for good, hard or soft. Each recipient comes with a cause, and a dead address is suppressed, so the next send to it never leaves.

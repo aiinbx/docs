@@ -10,7 +10,7 @@ What an endpoint receives: one request per event, each signed, in the envelope e
 
 | Event | Fires when |
 | --- | --- |
-| [`email.received`](endpoints/webhook-events/email-received.md) | Inbound mail arrived and was matched onto a thread, once per received message. |
+| [`email.received`](endpoints/webhook-events/email-received.md) | Inbound mail arrived and was matched onto a thread: once per received message, and again when the same message reaches another address of yours later. |
 | [`email.sent`](endpoints/webhook-events/email-sent.md) | A message was handed to the mail provider: acceptance, not delivery. |
 | [`email.delivered`](endpoints/webhook-events/email-delivered.md) | The receiving server accepted the message, reported per recipient. |
 | [`email.bounced`](endpoints/webhook-events/email-bounced.md) | Delivery to one or more recipients failed; a dead address is suppressed. |

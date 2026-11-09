@@ -155,20 +155,20 @@ This handler only logs events. Before using events to perform work in production
 
 ## 6. Continue the conversation
 
-Use the `thread_id` from the received event. Replace the placeholders below with the actual thread and event IDs. The API infers the reply's addressing and headers.
+Use the `thread_id` from the received event. Replace the placeholders below with the actual thread and email IDs. The API infers the reply's addressing and headers.
 
 ```ts TypeScript
 await aiinbx.threads.reply(
   "YOUR_THREAD_ID",
   { text: "Your reply arrived. The integration is working." },
-  { idempotencyKey: "reply-YOUR_EVENT_ID" }
+  { idempotencyKey: "reply-YOUR_EMAIL_ID" }
 )
 ```
 ```python Python
 client.threads.reply(
     "YOUR_THREAD_ID",
     {"text": "Your reply arrived. The integration is working."},
-    idempotency_key="reply-YOUR_EVENT_ID",
+    idempotency_key="reply-YOUR_EMAIL_ID",
 )
 client.close()
 ```
@@ -176,7 +176,7 @@ client.close()
 curl https://api.aiinbx.com/api/v2/threads/YOUR_THREAD_ID/reply \
   -H "Authorization: Bearer $AI_INBX_API_KEY" \
   -H "Content-Type: application/json" \
-  -H "Idempotency-Key: reply-YOUR_EVENT_ID" \
+  -H "Idempotency-Key: reply-YOUR_EMAIL_ID" \
   -d '{"text":"Your reply arrived. The integration is working."}'
 ```
 You now have a send-and-reply flow. Use the [production guide](guides/production.md) to add durable event processing, retries, tenant authorization, and operational monitoring. The [API reference](api/README.md) lists the full request and response schemas.
