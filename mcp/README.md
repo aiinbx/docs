@@ -450,6 +450,26 @@ Cursor takes a `headers` object beside `url`. Other clients take the same `heade
 ```
 How a client reads a variable into a header differs; see its documentation.
 
+**Command-only clients**
+
+Use this only when the client cannot connect to the server's URL. A client that can only start MCP servers as a command falls back to [`aiinbx-mcp`](https://github.com/aiinbx/mcp), which passes every message to the workspace server with the key:
+
+```json
+{
+  "mcpServers": {
+    "aiinbx": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "aiinbx-mcp"
+      ],
+      "env": {
+        "AI_INBX_API_KEY": "aibx_live_…"
+      }
+    }
+  }
+}
+```
 The inbox server takes no API key: a key acts for its whole workspace, and an inbox reaches only its own addresses.
 
 ## Tools
