@@ -1,0 +1,260 @@
+# AI Inbx
+
+> Email infrastructure for software that holds conversations. Send, receive, thread, and reply over one API.
+
+## Integrate AI Inbx
+
+Use AI Inbx to send and receive email, connect mailboxes, and reply in threads. REST base: https://api.aiinbx.com/api/v2. TypeScript: npm install aiinbx. Python: pip install aiinbx. Read the quickstart, API reference, and production guide before implementing. Keep keys server-side, verify webhooks over the raw body, and persist an idempotency key and payload for each logical send.
+
+## Docs
+
+- [AI Inbx documentation](https://docs.aiinbx.com/): Learn to send and receive email, manage conversation threads, and build AI email agents with the AI Inbx API, TypeScript SDK, and Python SDK.
+- [Quickstart](https://docs.aiinbx.com/quickstart): Get started with AI Inbx: add a sending domain, send your first email with the SDK, and receive the reply through a verified webhook.
+- [Core concepts](https://docs.aiinbx.com/concepts): The building blocks of AI Inbx: workspaces, sending identities, emails, threads, events, and the spaces that keep each customer's mail apart.
+- [Authentication](https://docs.aiinbx.com/authentication): Authenticate with Bearer API keys: the three scopes and what each one reaches, how to keep keys server-side, and how to rotate and delete them.
+- [Going to production](https://docs.aiinbx.com/guides/production): Go to production with AI Inbx: reliable, idempotent sends, durable webhook processing, customer boundaries, and monitoring of delivery outcomes.
+- [Plans and billing](https://docs.aiinbx.com/guides/billing): What each plan includes, exactly what counts against it, how extra usage and spending caps work, and what the API answers at a limit.
+
+## API reference
+
+- [API reference](https://docs.aiinbx.com/api): Explore the AI Inbx REST API by resource. Find individual endpoints, request and response schemas, and examples for every operation.
+
+### Emails
+
+- [Emails API](https://docs.aiinbx.com/api/emails): Use the AI Inbx emails API. Browse endpoints, request parameters, response schemas, and code examples for your integration.
+- [List emails](https://docs.aiinbx.com/api/endpoints/emails/list-emails)
+- [Send an email](https://docs.aiinbx.com/api/endpoints/emails/send-email)
+- [Retrieve an email](https://docs.aiinbx.com/api/endpoints/emails/retrieve-email)
+- [Update an email](https://docs.aiinbx.com/api/endpoints/emails/update-email)
+- [Send a draft](https://docs.aiinbx.com/api/endpoints/emails/send-draft)
+- [Cancel an email](https://docs.aiinbx.com/api/endpoints/emails/cancel-email)
+
+### Threads
+
+- [Threads API](https://docs.aiinbx.com/api/threads): Use the AI Inbx threads API. Browse endpoints, request parameters, response schemas, and code examples for your integration.
+- [List threads](https://docs.aiinbx.com/api/endpoints/threads/list-threads)
+- [Retrieve a thread](https://docs.aiinbx.com/api/endpoints/threads/retrieve-thread)
+- [Reply in a thread](https://docs.aiinbx.com/api/endpoints/threads/reply-to-thread)
+- [Forward a thread](https://docs.aiinbx.com/api/endpoints/threads/forward-thread)
+
+### Attachments
+
+- [Attachments API](https://docs.aiinbx.com/api/attachments): Use the AI Inbx attachments API. Browse endpoints, request parameters, response schemas, and code examples for your integration.
+- [Download an attachment](https://docs.aiinbx.com/api/endpoints/attachments/download-attachment)
+- [Inspect attachment metadata](https://docs.aiinbx.com/api/endpoints/attachments/inspect-attachment)
+- [Download prepared attachment text](https://docs.aiinbx.com/api/endpoints/attachments/retrieve-attachment-content)
+
+### Domains
+
+- [Domains API](https://docs.aiinbx.com/api/domains): Use the AI Inbx domains API. Browse endpoints, request parameters, response schemas, and code examples for your integration.
+- [List domains](https://docs.aiinbx.com/api/endpoints/domains/list-domains)
+- [Create a domain](https://docs.aiinbx.com/api/endpoints/domains/create-domain)
+- [Retrieve a domain](https://docs.aiinbx.com/api/endpoints/domains/retrieve-domain)
+- [Delete a domain](https://docs.aiinbx.com/api/endpoints/domains/delete-domain)
+- [Update domain tracking settings](https://docs.aiinbx.com/api/endpoints/domains/update-domain)
+- [Verify domain DNS records now](https://docs.aiinbx.com/api/endpoints/domains/verify-domain)
+- [Diagnose domain DNS configuration](https://docs.aiinbx.com/api/endpoints/domains/retrieve-domain-diagnostics)
+
+### Mailboxes
+
+- [Mailboxes API](https://docs.aiinbx.com/api/mailboxes): Use the AI Inbx mailboxes API. Browse endpoints, request parameters, response schemas, and code examples for your integration.
+- [List mailboxes](https://docs.aiinbx.com/api/endpoints/mailboxes/list-mailboxes)
+- [Create a mailbox connection URL](https://docs.aiinbx.com/api/endpoints/mailboxes/connect-mailbox)
+- [Retrieve a mailbox](https://docs.aiinbx.com/api/endpoints/mailboxes/retrieve-mailbox)
+- [Disconnect a mailbox](https://docs.aiinbx.com/api/endpoints/mailboxes/disconnect-mailbox)
+- [Queue a mailbox sync](https://docs.aiinbx.com/api/endpoints/mailboxes/sync-mailbox)
+
+### OAuth Apps
+
+- [OAuth Apps API](https://docs.aiinbx.com/api/oauth-apps): Use the AI Inbx oauth apps API. Browse endpoints, request parameters, response schemas, and code examples for your integration.
+- [List OAuth apps](https://docs.aiinbx.com/api/endpoints/oauth-apps/list-o-auth-apps)
+- [Create an OAuth app](https://docs.aiinbx.com/api/endpoints/oauth-apps/create-o-auth-app)
+- [Retrieve an OAuth app](https://docs.aiinbx.com/api/endpoints/oauth-apps/retrieve-o-auth-app)
+- [Delete an OAuth app](https://docs.aiinbx.com/api/endpoints/oauth-apps/delete-o-auth-app)
+- [Update an OAuth app](https://docs.aiinbx.com/api/endpoints/oauth-apps/update-o-auth-app)
+
+### Spaces
+
+- [Spaces API](https://docs.aiinbx.com/api/spaces): Use the AI Inbx spaces API. Browse endpoints, request parameters, response schemas, and code examples for your integration.
+- [List spaces](https://docs.aiinbx.com/api/endpoints/spaces/list-spaces)
+- [Create a space](https://docs.aiinbx.com/api/endpoints/spaces/create-space)
+- [Retrieve a space](https://docs.aiinbx.com/api/endpoints/spaces/retrieve-space)
+- [Delete a space](https://docs.aiinbx.com/api/endpoints/spaces/delete-space)
+- [Update a space](https://docs.aiinbx.com/api/endpoints/spaces/update-space)
+
+### Webhooks
+
+- [Webhooks API](https://docs.aiinbx.com/api/webhooks): Use the AI Inbx webhooks API. Browse endpoints, request parameters, response schemas, and code examples for your integration.
+- [List webhook endpoints](https://docs.aiinbx.com/api/endpoints/webhooks/list-webhook-endpoints)
+- [Create a webhook endpoint](https://docs.aiinbx.com/api/endpoints/webhooks/create-webhook-endpoint)
+- [Retrieve a webhook endpoint](https://docs.aiinbx.com/api/endpoints/webhooks/retrieve-webhook-endpoint)
+- [Delete a webhook endpoint](https://docs.aiinbx.com/api/endpoints/webhooks/delete-webhook-endpoint)
+- [Update a webhook endpoint](https://docs.aiinbx.com/api/endpoints/webhooks/update-webhook-endpoint)
+- [Rotate a webhook signing secret](https://docs.aiinbx.com/api/endpoints/webhooks/rotate-webhook-secret)
+- [Send a test webhook](https://docs.aiinbx.com/api/endpoints/webhooks/test-webhook-endpoint)
+- [List webhook deliveries](https://docs.aiinbx.com/api/endpoints/webhooks/list-webhook-deliveries)
+- [Retry webhook deliveries](https://docs.aiinbx.com/api/endpoints/webhooks/retry-webhook-deliveries)
+
+### Events
+
+- [Events API](https://docs.aiinbx.com/api/events): Use the AI Inbx events API. Browse endpoints, request parameters, response schemas, and code examples for your integration.
+- [List events](https://docs.aiinbx.com/api/endpoints/events/list-events)
+- [Retrieve an event](https://docs.aiinbx.com/api/endpoints/events/retrieve-event)
+
+### Webhook events
+
+- [Webhook events](https://docs.aiinbx.com/api/webhook-events): Every webhook event AI Inbx sends: one page per event with its payload schema, the signature headers, the answer that settles it, and an example body.
+- [email.received](https://docs.aiinbx.com/api/endpoints/webhook-events/email-received)
+- [email.sent](https://docs.aiinbx.com/api/endpoints/webhook-events/email-sent)
+- [email.delivered](https://docs.aiinbx.com/api/endpoints/webhook-events/email-delivered)
+- [email.bounced](https://docs.aiinbx.com/api/endpoints/webhook-events/email-bounced)
+- [email.complained](https://docs.aiinbx.com/api/endpoints/webhook-events/email-complained)
+- [email.failed](https://docs.aiinbx.com/api/endpoints/webhook-events/email-failed)
+- [email.unsubscribed](https://docs.aiinbx.com/api/endpoints/webhook-events/email-unsubscribed)
+- [email.opened](https://docs.aiinbx.com/api/endpoints/webhook-events/email-opened)
+- [email.clicked](https://docs.aiinbx.com/api/endpoints/webhook-events/email-clicked)
+- [thread.created](https://docs.aiinbx.com/api/endpoints/webhook-events/thread-created)
+- [domain.verified](https://docs.aiinbx.com/api/endpoints/webhook-events/domain-verified)
+- [domain.at_risk](https://docs.aiinbx.com/api/endpoints/webhook-events/domain-at-risk)
+- [domain.restored](https://docs.aiinbx.com/api/endpoints/webhook-events/domain-restored)
+- [domain.lost](https://docs.aiinbx.com/api/endpoints/webhook-events/domain-lost)
+- [mailbox.connected](https://docs.aiinbx.com/api/endpoints/webhook-events/mailbox-connected)
+- [mailbox.needs_reauth](https://docs.aiinbx.com/api/endpoints/webhook-events/mailbox-needs-reauth)
+- [mailbox.disconnected](https://docs.aiinbx.com/api/endpoints/webhook-events/mailbox-disconnected)
+
+### Suppressions
+
+- [Suppressions API](https://docs.aiinbx.com/api/suppressions): Use the AI Inbx suppressions API. Browse endpoints, request parameters, response schemas, and code examples for your integration.
+- [List suppressions](https://docs.aiinbx.com/api/endpoints/suppressions/list-suppressions)
+- [Create suppressions](https://docs.aiinbx.com/api/endpoints/suppressions/create-suppressions)
+- [Retrieve a suppression](https://docs.aiinbx.com/api/endpoints/suppressions/retrieve-suppression)
+- [Delete a suppression](https://docs.aiinbx.com/api/endpoints/suppressions/delete-suppression)
+
+### Pacing
+
+- [Pacing API](https://docs.aiinbx.com/api/pacing): Use the AI Inbx pacing API. Browse endpoints, request parameters, response schemas, and code examples for your integration.
+- [List pacing rules](https://docs.aiinbx.com/api/endpoints/pacing/list-pacing-rules)
+- [Create a pacing rule](https://docs.aiinbx.com/api/endpoints/pacing/create-pacing-rule)
+- [Retrieve a pacing rule](https://docs.aiinbx.com/api/endpoints/pacing/retrieve-pacing-rule)
+- [Delete a pacing rule](https://docs.aiinbx.com/api/endpoints/pacing/delete-pacing-rule)
+- [Update a pacing rule](https://docs.aiinbx.com/api/endpoints/pacing/update-pacing-rule)
+- [Retrieve pacing spread](https://docs.aiinbx.com/api/endpoints/pacing/retrieve-pacing-spread)
+- [Update pacing spread](https://docs.aiinbx.com/api/endpoints/pacing/update-pacing-spread)
+- [Retrieve the pacing queue](https://docs.aiinbx.com/api/endpoints/pacing/retrieve-pacing-queue)
+- [Release emails from the pacing queue](https://docs.aiinbx.com/api/endpoints/pacing/release-pacing-queue)
+
+### Workspace
+
+- [Workspace API](https://docs.aiinbx.com/api/workspace): Use the AI Inbx workspace API. Browse endpoints, request parameters, response schemas, and code examples for your integration.
+- [List workspaces](https://docs.aiinbx.com/api/endpoints/workspace/list-workspaces)
+- [Retrieve the workspace](https://docs.aiinbx.com/api/endpoints/workspace/retrieve-workspace)
+- [Update the workspace](https://docs.aiinbx.com/api/endpoints/workspace/update-workspace)
+
+### Members
+
+- [Members API](https://docs.aiinbx.com/api/members): Use the AI Inbx members API. Browse endpoints, request parameters, response schemas, and code examples for your integration.
+- [List members](https://docs.aiinbx.com/api/endpoints/members/list-members)
+- [Remove a member](https://docs.aiinbx.com/api/endpoints/members/remove-member)
+- [Update a member](https://docs.aiinbx.com/api/endpoints/members/update-member)
+- [List invitations](https://docs.aiinbx.com/api/endpoints/members/list-invitations)
+- [Invite someone](https://docs.aiinbx.com/api/endpoints/members/create-invitation)
+- [Cancel an invitation](https://docs.aiinbx.com/api/endpoints/members/cancel-invitation)
+
+### API Keys
+
+- [API Keys API](https://docs.aiinbx.com/api/api-keys): Use the AI Inbx api keys API. Browse endpoints, request parameters, response schemas, and code examples for your integration.
+- [List API keys](https://docs.aiinbx.com/api/endpoints/api-keys/list-api-keys)
+- [Create an API key](https://docs.aiinbx.com/api/endpoints/api-keys/create-api-key)
+- [Delete an API key](https://docs.aiinbx.com/api/endpoints/api-keys/delete-api-key)
+
+## Sending
+
+- [Sending](https://docs.aiinbx.com/guides/sending): Addresses, HTML and text bodies, attachments, custom headers, idempotency, and what the send response tells you.
+- [Scheduling](https://docs.aiinbx.com/guides/scheduling): Schedule a send up to 30 days ahead, move it, or cancel it, and learn what stays editable on a scheduled email until the moment it goes out.
+- [Drafts](https://docs.aiinbx.com/guides/drafts): Let an agent write an email and a person decide: create drafts over the API, then review, edit and send them from the console or your own UI.
+- [Suppressions](https://docs.aiinbx.com/guides/suppressions): Lists that stop the next send — bounces, complaints, unsubscribes — scoped per campaign or across the whole workspace.
+- [Pacing](https://docs.aiinbx.com/guides/pacing): Pace outbound mail with sending hours and rate ceilings, see the queue they hold messages in, and inspect, release or override held sends.
+
+## Receiving
+
+- [Receiving](https://docs.aiinbx.com/guides/receiving): Two ways mail reaches your code — an MX record on a domain, or a connected Gmail or Outlook mailbox — and what arrives when it does.
+- [Threads](https://docs.aiinbx.com/guides/threads): Read a conversation, page through a long one, and reply or forward within a thread without reconstructing In-Reply-To or References headers.
+- [Attachments](https://docs.aiinbx.com/guides/attachments): Download what arrived, or read the prepared Markdown of each attachment so a model can use a PDF or a document without you running a parser.
+
+## Addresses
+
+- [Domains](https://docs.aiinbx.com/guides/domains): Add a sending domain, publish the DNS records, verify it, diagnose the one record that won't resolve, and cover every subdomain at once with a wildcard.
+- [Mailboxes](https://docs.aiinbx.com/guides/mailboxes): Connect existing Gmail or Outlook accounts over OAuth from a hosted page, a link or the API, keep them synced, and brand the consent screen.
+- [Spaces](https://docs.aiinbx.com/guides/spaces): Group a workspace's domains, mailboxes and mail by customer — one space each — with rules and suppression lists that reach that space alone.
+
+## Webhooks
+
+- [Webhooks](https://docs.aiinbx.com/webhooks): Register an endpoint, choose events, route them by address, and understand what happens when a delivery fails.
+- [Verifying](https://docs.aiinbx.com/webhooks/verifying): Verify AI Inbx webhook signatures: the HMAC-SHA256 scheme, verifying in the TypeScript and Python SDKs, and checking it by hand in any language.
+
+### Events
+
+- [Event reference](https://docs.aiinbx.com/webhooks/events): Every AI Inbx webhook event type, the envelope they share, what each one means, and how to handle email, thread, domain and mailbox events.
+- [email.received](https://docs.aiinbx.com/webhooks/events/email-received): email.received fires once per inbound message, already matched onto its thread. The event most AI Inbx applications are built around.
+- [email.sent](https://docs.aiinbx.com/webhooks/events/email-sent): email.sent fires when a message is handed to the mail provider: acceptance, not delivery. A full endpoint gets the whole email with it.
+- [email.delivered](https://docs.aiinbx.com/webhooks/events/email-delivered): email.delivered fires when the receiving server accepts a message, per recipient. It does not prove inbox placement or that anyone read it.
+- [email.bounced](https://docs.aiinbx.com/webhooks/events/email-bounced): email.bounced fires when delivery fails for good, hard or soft. Each recipient comes with a cause, and a dead address is suppressed, so the next send to it never leaves.
+- [email.complained](https://docs.aiinbx.com/webhooks/events/email-complained): email.complained fires when a recipient marks your message as spam. Rarer than a bounce and far more serious for your sending reputation.
+- [email.failed](https://docs.aiinbx.com/webhooks/events/email-failed): email.failed fires when the mail provider refuses a message before any delivery attempt: nothing reached a recipient and nothing is retried.
+- [email.unsubscribed](https://docs.aiinbx.com/webhooks/events/email-unsubscribed): email.unsubscribed fires when a recipient opts out by link, one-click header or reply, naming the suppression list and scope it was written to.
+- [email.opened](https://docs.aiinbx.com/webhooks/events/email-opened): email.opened fires on a tracked open, with bot and privacy-proxy hits flagged. Requires open tracking on the domain or on the send.
+- [email.clicked](https://docs.aiinbx.com/webhooks/events/email-clicked): email.clicked fires when a recipient follows a tracked link, a far stronger engagement signal than an open. Bot and scanner hits are flagged.
+- [thread.created](https://docs.aiinbx.com/webhooks/events/thread-created): thread.created fires when a new conversation starts: from an inbound message, a send that joined no thread, or a forward.
+- [domain.verified](https://docs.aiinbx.com/webhooks/events/domain-verified): domain.verified fires when a domain's DKIM identity is verified and it can send. Use it to offer the domain as a sender in your product.
+- [domain.at_risk](https://docs.aiinbx.com/webhooks/events/domain-at-risk): domain.at_risk fires when a verified domain's DKIM record goes missing from DNS. The domain still sends; if the record is not back by stops_sending_at, 72 hours later, the domain is lost.
+- [domain.restored](https://docs.aiinbx.com/webhooks/events/domain-restored): domain.restored fires when a domain's missing DKIM record has been back in DNS for an hour before the domain was lost. The domain signs as before.
+- [domain.lost](https://docs.aiinbx.com/webhooks/events/domain-lost): domain.lost fires when a verified domain's DKIM record has been missing from DNS for 72 hours: sends from it fail with domain_unverified until the record is back.
+- [mailbox.connected](https://docs.aiinbx.com/webhooks/events/mailbox-connected): mailbox.connected fires when a customer finishes authorizing a Gmail or Outlook mailbox, carrying your ref and metadata to match it to a user.
+- [mailbox.needs_reauth](https://docs.aiinbx.com/webhooks/events/mailbox-needs-reauth): mailbox.needs_reauth fires when a mailbox's stored authorization stops working: revoked access, a password change, or an admin policy.
+- [mailbox.disconnected](https://docs.aiinbx.com/webhooks/events/mailbox-disconnected): mailbox.disconnected fires when a mailbox is removed, by you over the API or by the customer revoking access at Google or Microsoft.
+
+## Integrate
+
+- [Integrate AI Inbx](https://docs.aiinbx.com/integrations): Integrate AI Inbx with your stack: Next.js and Hono webhook handlers, React Email templates, and agent loops that send, read and reply to mail.
+- [Next.js](https://docs.aiinbx.com/integrations/nextjs): Use AI Inbx in Next.js: a route handler that verifies and receives webhooks, and a server action that sends email with the TypeScript SDK.
+- [Hono](https://docs.aiinbx.com/integrations/hono): Receive AI Inbx webhooks in Hono on Cloudflare Workers, Bun, Deno and Node: verify the signature over the raw body and hand the event to a worker.
+- [React Email](https://docs.aiinbx.com/integrations/react-email): Send React Email templates through AI Inbx: pass a component as `react` and the TypeScript SDK renders its HTML. Keep passing `text` beside it.
+- [Build an AI email agent](https://docs.aiinbx.com/integrations/agents): Build an AI email agent with signed webhooks, conversation threads, human review, and idempotent replies using the AI Inbx TypeScript SDK.
+
+## MCP & CLI
+
+- [MCP server](https://docs.aiinbx.com/mcp): Run AI Inbx from Claude, ChatGPT, Cursor, VS Code, Codex or any MCP client, or give it an inbox of its own: two servers, signed in as you or with an API key.
+- [MCP tools](https://docs.aiinbx.com/mcp/tools): Every tool the AI Inbx MCP servers offer, with its arguments and what a client is told about it before it runs.
+- [CLI](https://docs.aiinbx.com/cli): The aiinbx command line: send and read mail, call every API resource, forward webhooks to localhost without a tunnel, and check a domain's DNS.
+- [Give your agent an inbox](https://docs.aiinbx.com/guides/agent-inbox): Connect Claude Code, Cursor or the aiinbx CLI to an inbox — an email address of its own that it sends from and reads, and nothing else in your workspace.
+- [Documentation for agents](https://docs.aiinbx.com/reference/agents): Machine-readable docs for coding agents: llms.txt, Markdown copies of every page, the OpenAPI document, and the rules for implementing AI Inbx.
+
+## SDKs
+
+- [SDKs](https://docs.aiinbx.com/sdks): Official TypeScript and Python clients — same resources, same idempotency and webhook verification, idiomatic in each language.
+- [TypeScript](https://docs.aiinbx.com/sdks/typescript): Install, configure, and use the aiinbx package — resources, pagination, response metadata, typed errors, React Email, and webhook verification.
+- [Python](https://docs.aiinbx.com/sdks/python): Install, configure, and use the aiinbx package — sync and async clients, pagination, raw responses, typed errors, and webhook verification.
+
+## Reference
+
+- [Conventions](https://docs.aiinbx.com/reference/conventions): The rules that hold across every AI Inbx endpoint: prefixed IDs, cursor pagination, timestamps, request IDs, and idempotent retries.
+- [Errors](https://docs.aiinbx.com/reference/errors): Every AI Inbx error code in the problem+json body, what each one means, how to recover from it, and which failures are worth retrying.
+
+## Other
+
+- [AI Inbx API](https://docs.aiinbx.com/api/endpoints)
+
+## Agent skills
+
+- [ai-inbx](https://docs.aiinbx.com/.well-known/agent-skills/ai-inbx/SKILL.md): Read the AI Inbx docs instead of answering from memory. Email infrastructure for software that holds conversations. Send, receive, thread, and reply over one API. Use when a task involves AI Inbx: how it works, how to set it up or configure it, or its API.
+
+## Agent resources
+
+- [llms-full.txt](https://docs.aiinbx.com/llms-full.txt): The full Markdown of every page in one file.
+- [Page Markdown](https://docs.aiinbx.com/index.md): Append `.md` to any page URL to fetch that page as raw Markdown.
+- [JSON API](https://docs.aiinbx.com/api/docs/pages.json): Page index of the JSON docs API; each entry links the page's JSON and Markdown forms. Described by the OpenAPI document at https://docs.aiinbx.com/openapi.json.
+- [Agent skills](https://docs.aiinbx.com/.well-known/agent-skills/index.json): Agent Skills discovery index of the skills this site publishes.
+- [API catalog](https://docs.aiinbx.com/.well-known/api-catalog): RFC 9727 linkset of the APIs documented here.
+- [AI catalog](https://docs.aiinbx.com/.well-known/ai-catalog.json): ARD manifest of the agent-facing resources on this site (MCP server, skills, APIs).
+- [agent-readability.json](https://docs.aiinbx.com/agent-readability.json): Manifest of every agent-facing artifact on this site.
+- [Sitemap](https://docs.aiinbx.com/sitemap.xml): Every indexable page URL with its last-modified date.

@@ -1,44 +1,197 @@
-# Mintlify Starter Kit
+# AI Inbx documentation
 
-Use the starter kit to get your docs deployed and ready to customize.
+Email infrastructure for software that holds conversations. Send, receive, thread, and reply over one API.
 
-Click the green **Use this template** button at the top of this repo to copy the Mintlify starter kit. The starter kit contains examples with
+This is the documentation of [AI Inbx](https://aiinbx.com), published at [docs.aiinbx.com](https://docs.aiinbx.com): one Markdown file per page, in the folders of its URLs. [`llms.txt`](llms.txt) lists every page with a summary.
 
-- Guide pages
-- Navigation
-- Customizations
-- API reference pages
-- Use of popular components
+This repository is generated from the live docs. Issues are welcome; edits get ported into the source.
 
-**[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
+## Documentation
 
-## Development
+- [AI Inbx documentation](index.md)
+- [Quickstart](quickstart.md)
+- [Core concepts](concepts.md)
+- [Authentication](authentication.md)
+- [Going to production](guides/production.md)
+- [Plans and billing](guides/billing.md)
+- Sending
+  - [Sending](guides/sending.md)
+  - [Scheduling](guides/scheduling.md)
+  - [Drafts](guides/drafts.md)
+  - [Suppressions](guides/suppressions.md)
+  - [Pacing](guides/pacing.md)
+- Receiving
+  - [Receiving](guides/receiving.md)
+  - [Threads](guides/threads.md)
+  - [Attachments](guides/attachments.md)
+- Addresses
+  - [Domains](guides/domains.md)
+  - [Mailboxes](guides/mailboxes.md)
+  - [Spaces](guides/spaces.md)
+- Webhooks
+  - [Webhooks](webhooks/README.md)
+  - [Verifying](webhooks/verifying.md)
+  - Events
+    - [Event reference](webhooks/events/README.md)
+    - [email.received](webhooks/events/email-received.md)
+    - [email.sent](webhooks/events/email-sent.md)
+    - [email.delivered](webhooks/events/email-delivered.md)
+    - [email.bounced](webhooks/events/email-bounced.md)
+    - [email.complained](webhooks/events/email-complained.md)
+    - [email.failed](webhooks/events/email-failed.md)
+    - [email.unsubscribed](webhooks/events/email-unsubscribed.md)
+    - [email.opened](webhooks/events/email-opened.md)
+    - [email.clicked](webhooks/events/email-clicked.md)
+    - [thread.created](webhooks/events/thread-created.md)
+    - [domain.verified](webhooks/events/domain-verified.md)
+    - [domain.at_risk](webhooks/events/domain-at-risk.md)
+    - [domain.restored](webhooks/events/domain-restored.md)
+    - [domain.lost](webhooks/events/domain-lost.md)
+    - [mailbox.connected](webhooks/events/mailbox-connected.md)
+    - [mailbox.needs_reauth](webhooks/events/mailbox-needs-reauth.md)
+    - [mailbox.disconnected](webhooks/events/mailbox-disconnected.md)
+- Integrate
+  - [Integrate AI Inbx](integrations/README.md)
+  - [Next.js](integrations/nextjs.md)
+  - [Hono](integrations/hono.md)
+  - [React Email](integrations/react-email.md)
+  - [Build an AI email agent](integrations/agents.md)
+- MCP & CLI
+  - [MCP server](mcp/README.md)
+  - [MCP tools](mcp/tools.md)
+  - [CLI](cli.md)
+  - [Give your agent an inbox](guides/agent-inbox.md)
+  - [Documentation for agents](reference/agents.md)
+- SDKs
+  - [SDKs](sdks/README.md)
+  - [TypeScript](sdks/typescript.md)
+  - [Python](sdks/python.md)
+- Reference
+  - [Conventions](reference/conventions.md)
+  - [Errors](reference/errors.md)
 
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
+## API reference
 
-```
-npm i -g mint
-```
+- [API reference](api/README.md)
+- Emails
+  - [Emails API](api/emails.md)
+  - [List emails](api/endpoints/emails/list-emails.md)
+  - [Send an email](api/endpoints/emails/send-email.md)
+  - [Retrieve an email](api/endpoints/emails/retrieve-email.md)
+  - [Update an email](api/endpoints/emails/update-email.md)
+  - [Send a draft](api/endpoints/emails/send-draft.md)
+  - [Cancel an email](api/endpoints/emails/cancel-email.md)
+- Threads
+  - [Threads API](api/threads.md)
+  - [List threads](api/endpoints/threads/list-threads.md)
+  - [Retrieve a thread](api/endpoints/threads/retrieve-thread.md)
+  - [Reply in a thread](api/endpoints/threads/reply-to-thread.md)
+  - [Forward a thread](api/endpoints/threads/forward-thread.md)
+- Attachments
+  - [Attachments API](api/attachments.md)
+  - [Download an attachment](api/endpoints/attachments/download-attachment.md)
+  - [Inspect attachment metadata](api/endpoints/attachments/inspect-attachment.md)
+  - [Download prepared attachment text](api/endpoints/attachments/retrieve-attachment-content.md)
+- Domains
+  - [Domains API](api/domains.md)
+  - [List domains](api/endpoints/domains/list-domains.md)
+  - [Create a domain](api/endpoints/domains/create-domain.md)
+  - [Retrieve a domain](api/endpoints/domains/retrieve-domain.md)
+  - [Delete a domain](api/endpoints/domains/delete-domain.md)
+  - [Update domain tracking settings](api/endpoints/domains/update-domain.md)
+  - [Verify domain DNS records now](api/endpoints/domains/verify-domain.md)
+  - [Diagnose domain DNS configuration](api/endpoints/domains/retrieve-domain-diagnostics.md)
+- Mailboxes
+  - [Mailboxes API](api/mailboxes.md)
+  - [List mailboxes](api/endpoints/mailboxes/list-mailboxes.md)
+  - [Create a mailbox connection URL](api/endpoints/mailboxes/connect-mailbox.md)
+  - [Retrieve a mailbox](api/endpoints/mailboxes/retrieve-mailbox.md)
+  - [Disconnect a mailbox](api/endpoints/mailboxes/disconnect-mailbox.md)
+  - [Queue a mailbox sync](api/endpoints/mailboxes/sync-mailbox.md)
+- OAuth Apps
+  - [OAuth Apps API](api/oauth-apps.md)
+  - [List OAuth apps](api/endpoints/oauth-apps/list-o-auth-apps.md)
+  - [Create an OAuth app](api/endpoints/oauth-apps/create-o-auth-app.md)
+  - [Retrieve an OAuth app](api/endpoints/oauth-apps/retrieve-o-auth-app.md)
+  - [Delete an OAuth app](api/endpoints/oauth-apps/delete-o-auth-app.md)
+  - [Update an OAuth app](api/endpoints/oauth-apps/update-o-auth-app.md)
+- Spaces
+  - [Spaces API](api/spaces.md)
+  - [List spaces](api/endpoints/spaces/list-spaces.md)
+  - [Create a space](api/endpoints/spaces/create-space.md)
+  - [Retrieve a space](api/endpoints/spaces/retrieve-space.md)
+  - [Delete a space](api/endpoints/spaces/delete-space.md)
+  - [Update a space](api/endpoints/spaces/update-space.md)
+- Webhooks
+  - [Webhooks API](api/webhooks.md)
+  - [List webhook endpoints](api/endpoints/webhooks/list-webhook-endpoints.md)
+  - [Create a webhook endpoint](api/endpoints/webhooks/create-webhook-endpoint.md)
+  - [Retrieve a webhook endpoint](api/endpoints/webhooks/retrieve-webhook-endpoint.md)
+  - [Delete a webhook endpoint](api/endpoints/webhooks/delete-webhook-endpoint.md)
+  - [Update a webhook endpoint](api/endpoints/webhooks/update-webhook-endpoint.md)
+  - [Rotate a webhook signing secret](api/endpoints/webhooks/rotate-webhook-secret.md)
+  - [Send a test webhook](api/endpoints/webhooks/test-webhook-endpoint.md)
+  - [List webhook deliveries](api/endpoints/webhooks/list-webhook-deliveries.md)
+  - [Retry webhook deliveries](api/endpoints/webhooks/retry-webhook-deliveries.md)
+- Events
+  - [Events API](api/events.md)
+  - [List events](api/endpoints/events/list-events.md)
+  - [Retrieve an event](api/endpoints/events/retrieve-event.md)
+- Webhook events
+  - [Webhook events](api/webhook-events.md)
+  - [email.received](api/endpoints/webhook-events/email-received.md)
+  - [email.sent](api/endpoints/webhook-events/email-sent.md)
+  - [email.delivered](api/endpoints/webhook-events/email-delivered.md)
+  - [email.bounced](api/endpoints/webhook-events/email-bounced.md)
+  - [email.complained](api/endpoints/webhook-events/email-complained.md)
+  - [email.failed](api/endpoints/webhook-events/email-failed.md)
+  - [email.unsubscribed](api/endpoints/webhook-events/email-unsubscribed.md)
+  - [email.opened](api/endpoints/webhook-events/email-opened.md)
+  - [email.clicked](api/endpoints/webhook-events/email-clicked.md)
+  - [thread.created](api/endpoints/webhook-events/thread-created.md)
+  - [domain.verified](api/endpoints/webhook-events/domain-verified.md)
+  - [domain.at_risk](api/endpoints/webhook-events/domain-at-risk.md)
+  - [domain.restored](api/endpoints/webhook-events/domain-restored.md)
+  - [domain.lost](api/endpoints/webhook-events/domain-lost.md)
+  - [mailbox.connected](api/endpoints/webhook-events/mailbox-connected.md)
+  - [mailbox.needs_reauth](api/endpoints/webhook-events/mailbox-needs-reauth.md)
+  - [mailbox.disconnected](api/endpoints/webhook-events/mailbox-disconnected.md)
+- Suppressions
+  - [Suppressions API](api/suppressions.md)
+  - [List suppressions](api/endpoints/suppressions/list-suppressions.md)
+  - [Create suppressions](api/endpoints/suppressions/create-suppressions.md)
+  - [Retrieve a suppression](api/endpoints/suppressions/retrieve-suppression.md)
+  - [Delete a suppression](api/endpoints/suppressions/delete-suppression.md)
+- Pacing
+  - [Pacing API](api/pacing.md)
+  - [List pacing rules](api/endpoints/pacing/list-pacing-rules.md)
+  - [Create a pacing rule](api/endpoints/pacing/create-pacing-rule.md)
+  - [Retrieve a pacing rule](api/endpoints/pacing/retrieve-pacing-rule.md)
+  - [Delete a pacing rule](api/endpoints/pacing/delete-pacing-rule.md)
+  - [Update a pacing rule](api/endpoints/pacing/update-pacing-rule.md)
+  - [Retrieve pacing spread](api/endpoints/pacing/retrieve-pacing-spread.md)
+  - [Update pacing spread](api/endpoints/pacing/update-pacing-spread.md)
+  - [Retrieve the pacing queue](api/endpoints/pacing/retrieve-pacing-queue.md)
+  - [Release emails from the pacing queue](api/endpoints/pacing/release-pacing-queue.md)
+- Workspace
+  - [Workspace API](api/workspace.md)
+  - [List workspaces](api/endpoints/workspace/list-workspaces.md)
+  - [Retrieve the workspace](api/endpoints/workspace/retrieve-workspace.md)
+  - [Update the workspace](api/endpoints/workspace/update-workspace.md)
+- Members
+  - [Members API](api/members.md)
+  - [List members](api/endpoints/members/list-members.md)
+  - [Remove a member](api/endpoints/members/remove-member.md)
+  - [Update a member](api/endpoints/members/update-member.md)
+  - [List invitations](api/endpoints/members/list-invitations.md)
+  - [Invite someone](api/endpoints/members/create-invitation.md)
+  - [Cancel an invitation](api/endpoints/members/cancel-invitation.md)
+- API Keys
+  - [API Keys API](api/api-keys.md)
+  - [List API keys](api/endpoints/api-keys/list-api-keys.md)
+  - [Create an API key](api/endpoints/api-keys/create-api-key.md)
+  - [Delete an API key](api/endpoints/api-keys/delete-api-key.md)
 
-Run the following command at the root of your documentation, where your `docs.json` is located:
+## Other
 
-```
-mint dev
-```
-
-View your local preview at `http://localhost:3000`.
-
-## Publishing changes
-
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
-
-## Need help?
-
-### Troubleshooting
-
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
-
-### Resources
-- [Mintlify documentation](https://mintlify.com/docs)
-- [Mintlify community](https://mintlify.com/community)
+- [AI Inbx API](api/endpoints/README.md)
