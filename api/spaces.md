@@ -15,6 +15,9 @@ Group a workspace's domains, mailboxes and mail by customer. Optional: a workspa
 | `GET` | [Retrieve a space](endpoints/spaces/retrieve-space.md) | `/spaces/{space_id}` |
 | `DELETE` | [Delete a space](endpoints/spaces/delete-space.md) | `/spaces/{space_id}` |
 | `PATCH` | [Update a space](endpoints/spaces/update-space.md) | `/spaces/{space_id}` |
+| `GET` | [List addresses](endpoints/spaces/list-addresses.md) | `/addresses` |
+| `POST` | [Assign an address to a space](endpoints/spaces/assign-address.md) | `/addresses` |
+| `DELETE` | [Remove an address from its space](endpoints/spaces/remove-address.md) | `/addresses/{address}` |
 
 ## Request essentials [#request-essentials]
 

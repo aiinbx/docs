@@ -4,7 +4,7 @@ Every tool the AI Inbx MCP servers offer, with its arguments and what a client i
 
 [View on docs.aiinbx.com](https://docs.aiinbx.com/mcp/tools)
 
-The workspace [MCP server](README.md), `aiinbx`, offers 25 tools for the daily work, and reaches the other 44 operations of the API through four generic tools. Each is an [API operation](../api/README.md) under another name, taking the same fields and answering with its JSON, trimmed for a model: `html` and `stripped_html` are left out where text says the same, an answer longer than 40,000 characters is cut with a note saying so, an empty success reads `Done.`, a failure is a tool error carrying the status, `code` and `detail`, and [outside content](#labels) comes wrapped in `<external_data>`.
+The workspace [MCP server](README.md), `aiinbx`, offers 25 tools for the daily work, and reaches the other 47 operations of the API through four generic tools. Each is an [API operation](../api/README.md) under another name, taking the same fields and answering with its JSON, trimmed for a model: `html` and `stripped_html` are left out where text says the same, an answer longer than 40,000 characters is cut with a note saying so, an empty success reads `Done.`, a failure is a tool error carrying the status, `code` and `detail`, and [outside content](#labels) comes wrapped in `<external_data>`.
 
 Every tool also takes `workspace_id`. When a sign-in reaches more than one workspace, the assistant finds the ids with `aiinbx_workspaces_list` and names one on every call.
 
@@ -248,7 +248,7 @@ Writes
 
 Registers a sending domain and returns the DNS records to publish: SPF, DKIM, DMARC, a return path, and an MX record for receiving. `region` selects the regional mail infrastructure for this domain; it can be changed with `PATCH /domains/{domain_id}` until the domain is verified.
 
-A wildcard — `*.acme.dev` — is verified once and covers every subdomain: the MX record goes at `*.acme.dev`, the rest at `acme.dev`, and the apex keeps whatever mail setup it has. A name one label under a wildcard of yours — `hi.acme.dev` under `*.acme.dev` — is created as a subdomain of it: no records, verified as soon as the wildcard is, in whatever `space_id` you give it. That is how a platform hands each customer an address of their own without touching DNS again.
+A wildcard — `*.acme.dev` — is verified once and covers every subdomain: the MX record goes at `*.acme.dev`, the rest at `acme.dev`, and the apex keeps whatever mail setup it has. A name one label under a wildcard of yours — `hi.acme.dev` under `*.acme.dev` — is created as a subdomain of it: no records, verified as soon as the wildcard is, in whatever `space_id` you give it. That is how a platform hands each customer an address of their own without touching DNS again. To give customers single addresses of one shared domain instead, assign each address to its customer's space with `POST /addresses`.
 
 A domain name can be connected in several spaces and workspaces, but sending and receiving are enabled for the one whose DKIM key is published. To move them, add the domain where it should go and publish its DNS records. The next verification check moves them; existing mail stays where it was. Duplicate apex or wildcard identities within one space fail with `domain_taken`.
 
@@ -406,7 +406,7 @@ It takes no arguments beyond `workspace_id`.
 
 Read-only
 
-Returns the workspace the request acts in: its name, its slug, and the tracking defaults a domain added from now on starts with.
+Returns the workspace the request acts in: its name, its slug, the tracking defaults a domain added from now on starts with, and whether mail outside spaces threads across addresses.
 
 It takes no arguments beyond `workspace_id`.
 
@@ -416,12 +416,13 @@ It takes no arguments beyond `workspace_id`.
 
 Writes
 
-Renames the workspace or changes its tracking defaults; only the fields given change. A new name brings a new slug, which moves the console URLs with it (the provided domain keeps its name), so a workspace can be renamed once a month — sooner fails with 409 `rename_cooldown`. Tracking defaults apply to domains added from now on; each existing domain keeps its own. Admin only.
+Renames the workspace, changes its tracking defaults or switches `thread_across_addresses` for mail outside spaces; only the fields given change. A new name brings a new slug, which moves the console URLs with it (the provided domain keeps its name), so a workspace can be renamed once a month — sooner fails with 409 `rename_cooldown`. Tracking defaults apply to domains added from now on; each existing domain keeps its own. Admin only.
 
 | Prop | Type | Default | Description |
 | - | - | - | - |
 | `name?` | `string` | - | The workspace's name. |
 | `tracking?` | `object` | - | What a domain added from now on starts with. Only the fields given change; existing domains keep theirs. |
+| `thread_across_addresses?` | `boolean` | - | Whether an email without reply headers that arrives outside spaces can join any matching conversation outside spaces. Off, the default, it joins only a conversation the address it arrived at already took part in: sent in, received in, or was the Reply-To of. An email with reply headers always joins the conversation it answers. Turn it on when several of your addresses write to the same contacts in the same conversations. |
 
 `PATCH /workspace` · [API reference](../api/endpoints/workspace/update-workspace.md)
 
@@ -441,7 +442,7 @@ Redirects to a short-lived signed URL for the attachment's prepared text — Mar
 
 ## Everything else
 
-The rest of the API — spaces, API keys, mailboxes, OAuth apps, webhooks, events, pacing and members — goes through four tools, so a client does not load 44 more definitions into every turn:
+The rest of the API — spaces, API keys, mailboxes, OAuth apps, webhooks, events, pacing and members — goes through four tools, so a client does not load 47 more definitions into every turn:
 
 | Tool | What it does | Labels |
 | --- | --- | --- |
@@ -458,9 +459,12 @@ The rest of the API — spaces, API keys, mailboxes, OAuth apps, webhooks, event
 | --- | --- | --- | --- |
 | `spaces_list` | Lists the workspace's spaces, oldest first. | Read-only | [`GET`](../api/endpoints/spaces/list-spaces.md) |
 | `spaces_create` | Creates a space — one per customer, typically. | Writes | [`POST`](../api/endpoints/spaces/create-space.md) |
-| `spaces_retrieve` | Returns one space by id, with its name and the `external_id` you gave it. | Read-only | [`GET`](../api/endpoints/spaces/retrieve-space.md) |
-| `spaces_update` | Changes the space's name or `external_id`; only the fields given change, and `external_id: null` clears it. | Writes | [`PATCH`](../api/endpoints/spaces/update-space.md) |
+| `spaces_retrieve` | Returns one space by id, with its name, the `external_id` you gave it and its `thread_across_addresses` switch. | Read-only | [`GET`](../api/endpoints/spaces/retrieve-space.md) |
+| `spaces_update` | Changes the space's name, `external_id` or `thread_across_addresses`; only the fields given change, and `external_id: null` clears it. | Writes | [`PATCH`](../api/endpoints/spaces/update-space.md) |
 | `spaces_delete` | Marks the space for deletion and starts its teardown in the background. | Destructive | [`DELETE`](../api/endpoints/spaces/delete-space.md) |
+| `addresses_list` | Lists the addresses assigned to a space of their own, newest first. | Read-only | [`GET`](../api/endpoints/spaces/list-addresses.md) |
+| `addresses_assign` | Assigns one address of a verified domain of the workspace to a space, whatever space its domain is in: one shared domain, `anna@agents.com` in one customer's space and `bob@agents.com` in another's, with no DNS change. | Writes | [`POST`](../api/endpoints/spaces/assign-address.md) |
+| `addresses_remove` | Removes the assignment: from its next email on, the address is where its untagged address is assigned — `anna@agents.com` for `anna+orders@agents.com` — else in its domain's space again. | Destructive | [`DELETE`](../api/endpoints/spaces/remove-address.md) |
 
 ### API Keys
 

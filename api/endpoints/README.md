@@ -17,6 +17,9 @@ Group a workspace's domains, mailboxes and mail by customer. Optional: a workspa
 - [`GET /spaces/{space_id}`](spaces/retrieve-space.md) — Retrieve a space.
 - [`DELETE /spaces/{space_id}`](spaces/delete-space.md) — Delete a space.
 - [`PATCH /spaces/{space_id}`](spaces/update-space.md) — Update a space.
+- [`GET /addresses`](spaces/list-addresses.md) — List addresses.
+- [`POST /addresses`](spaces/assign-address.md) — Assign an address to a space.
+- [`DELETE /addresses/{address}`](spaces/remove-address.md) — Remove an address from its space.
 
 ## API Keys
 

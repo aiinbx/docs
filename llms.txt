@@ -81,6 +81,9 @@ Use AI Inbx to send and receive email, connect mailboxes, and reply in threads. 
 - [Retrieve a space](https://docs.aiinbx.com/api/endpoints/spaces/retrieve-space)
 - [Delete a space](https://docs.aiinbx.com/api/endpoints/spaces/delete-space)
 - [Update a space](https://docs.aiinbx.com/api/endpoints/spaces/update-space)
+- [List addresses](https://docs.aiinbx.com/api/endpoints/spaces/list-addresses)
+- [Assign an address to a space](https://docs.aiinbx.com/api/endpoints/spaces/assign-address)
+- [Remove an address from its space](https://docs.aiinbx.com/api/endpoints/spaces/remove-address)
 
 ### Webhooks
 

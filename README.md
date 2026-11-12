@@ -123,6 +123,9 @@ This repository is generated from the live docs. Issues are welcome; edits get p
   - [Retrieve a space](api/endpoints/spaces/retrieve-space.md)
   - [Delete a space](api/endpoints/spaces/delete-space.md)
   - [Update a space](api/endpoints/spaces/update-space.md)
+  - [List addresses](api/endpoints/spaces/list-addresses.md)
+  - [Assign an address to a space](api/endpoints/spaces/assign-address.md)
+  - [Remove an address from its space](api/endpoints/spaces/remove-address.md)
 - Webhooks
   - [Webhooks API](api/webhooks.md)
   - [List webhook endpoints](api/endpoints/webhooks/list-webhook-endpoints.md)

@@ -270,6 +270,8 @@ The inbox receives mail from anyone who has its address, and any of it can conta
 
 Your account page lists the connection as an inbox with its address. Editing it changes the addresses, and the next call already uses them. An inbox stays an inbox: to let the agent run the workspace too, connect it to the workspace server as well. Revoking the connection stops it at once.
 
+An address [assigned to another space](spaces.md#single-addresses-of-one-domain) after the agent connected leaves the connection on the old space: it keeps reading the mail there, and its sends are refused. Connect it again for the new space.
+
 Workspace admins see every inbox in the console, with who connected which agent, and can remove an agent from one. The inbox and its mail stay when its last agent leaves.
 
 ## Related

@@ -4,7 +4,7 @@
 
 Registers a sending domain and returns the DNS records to publish: SPF, DKIM, DMARC, a return path, and an MX record for receiving. `region` selects the regional mail infrastructure for this domain; it can be changed with `PATCH /domains/{domain_id}` until the domain is verified.
 
-A wildcard — `*.acme.dev` — is verified once and covers every subdomain: the MX record goes at `*.acme.dev`, the rest at `acme.dev`, and the apex keeps whatever mail setup it has. A name one label under a wildcard of yours — `hi.acme.dev` under `*.acme.dev` — is created as a subdomain of it: no records, verified as soon as the wildcard is, in whatever `space_id` you give it. That is how a platform hands each customer an address of their own without touching DNS again.
+A wildcard — `*.acme.dev` — is verified once and covers every subdomain: the MX record goes at `*.acme.dev`, the rest at `acme.dev`, and the apex keeps whatever mail setup it has. A name one label under a wildcard of yours — `hi.acme.dev` under `*.acme.dev` — is created as a subdomain of it: no records, verified as soon as the wildcard is, in whatever `space_id` you give it. That is how a platform hands each customer an address of their own without touching DNS again. To give customers single addresses of one shared domain instead, assign each address to its customer's space with `POST /addresses`.
 
 A domain name can be connected in several spaces and workspaces, but sending and receiving are enabled for the one whose DKIM key is published. To move them, add the domain where it should go and publish its DNS records. The next verification check moves them; existing mail stays where it was. Duplicate apex or wildcard identities within one space fail with `domain_taken`.
 
