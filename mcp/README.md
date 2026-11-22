@@ -13,7 +13,7 @@ Both are remote servers (Streamable HTTP). There is nothing to install or run, a
 
 ## Connect
 
-In the console, **Connect your AI** in the sidebar shows the same setup for each client and server.
+In the console, **Connect via MCP** in the sidebar shows the same setup for each client and server.
 
 ### Workspace server
 
