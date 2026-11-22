@@ -70,4 +70,4 @@ There are two moments in the browser: signing in, and choosing a [plan](guides/b
 
 ## For other agents
 
-The skills are also listed at [`/.well-known/agent-skills/index.json`](https://aiinbx.com/.well-known/agent-skills/index.json), and [`auth.md`](https://aiinbx.com/auth.md) says how an agent signs in and where an API key goes. An assistant that only needs to send and read mail, with no code of yours, can use the [MCP server](mcp/README.md) instead.
+The skills are also listed at [`/.well-known/agent-skills/index.json`](https://aiinbx.com/.well-known/agent-skills/index.json), and [`auth.md`](https://aiinbx.com/auth.md) says how an agent signs in and where an API key goes. The workspace [MCP server](mcp/README.md#skills) serves the same skills to clients that load skills from an MCP server. An assistant that only needs to send and read mail, with no code of yours, can use that server's tools instead.

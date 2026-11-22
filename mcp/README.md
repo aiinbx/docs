@@ -485,6 +485,10 @@ The inbox server offers only the mail tools an inbox may call, and none of the f
 
 [MCP tools](tools.md) lists every tool and operation with its arguments.
 
+## Skills
+
+The workspace server also serves the four [agent skills](../skills.md) through the MCP [Skills extension](https://modelcontextprotocol.io/extensions/skills/overview). A client that supports it lists them with `skills/list` and reads each one from its `skill://` address, such as `skill://aiinbx-setup/SKILL.md`, with the docs pages it refers to beside it.
+
 ## Try asking
 
 **Triage the inbox.**
