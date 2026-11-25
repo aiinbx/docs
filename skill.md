@@ -1,12 +1,12 @@
 # undefined
 
-Read the AI Inbx docs instead of answering from memory. Email infrastructure for software that holds conversations. Send, receive, thread, and reply over one API. Use when a task involves AI Inbx: how it works, how to set it up or configure it, or its API.
+Read the AI Inbx docs instead of answering from memory. The email API for AI agent fleets. Send, receive, thread, and reply over one API. Use when a task involves AI Inbx: how it works, how to set it up or configure it, or its API.
 
 [View on docs.aiinbx.com](https://docs.aiinbx.com/skill)
 
 # AI Inbx
 
-Email infrastructure for software that holds conversations. Send, receive, thread, and reply over one API.
+The email API for AI agent fleets. Send, receive, thread, and reply over one API.
 
 This skill points you at the AI Inbx docs, at https://docs.aiinbx.com/. When a task involves AI Inbx, read the relevant page before relying on what you remember: the docs are the source of truth, and they change.
 

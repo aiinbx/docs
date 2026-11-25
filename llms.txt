@@ -1,6 +1,6 @@
 # AI Inbx
 
-> Email infrastructure for software that holds conversations. Send, receive, thread, and reply over one API.
+> The email API for AI agent fleets. Send, receive, thread, and reply over one API.
 
 ## Integrate AI Inbx
 
@@ -250,7 +250,7 @@ Use AI Inbx to send and receive email, connect mailboxes, and reply in threads. 
 
 ## Agent skills
 
-- [ai-inbx](https://docs.aiinbx.com/.well-known/agent-skills/ai-inbx/SKILL.md): Read the AI Inbx docs instead of answering from memory. Email infrastructure for software that holds conversations. Send, receive, thread, and reply over one API. Use when a task involves AI Inbx: how it works, how to set it up or configure it, or its API.
+- [ai-inbx](https://docs.aiinbx.com/.well-known/agent-skills/ai-inbx/SKILL.md): Read the AI Inbx docs instead of answering from memory. The email API for AI agent fleets. Send, receive, thread, and reply over one API. Use when a task involves AI Inbx: how it works, how to set it up or configure it, or its API.
 
 ## Agent resources
 

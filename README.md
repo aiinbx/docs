@@ -1,6 +1,6 @@
 # AI Inbx documentation
 
-Email infrastructure for software that holds conversations. Send, receive, thread, and reply over one API.
+The email API for AI agent fleets. Send, receive, thread, and reply over one API.
 
 This is the documentation of [AI Inbx](https://aiinbx.com), published at [docs.aiinbx.com](https://docs.aiinbx.com): one Markdown file per page, in the folders of its URLs. [`llms.txt`](llms.txt) lists every page with a summary.
 
