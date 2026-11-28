@@ -158,7 +158,7 @@ curl https://api.aiinbx.com/api/v2/emails \
   -H "Content-Type: application/json" \
   -d @email.json
 ```
-A replay returns `200` with `Idempotent-Replayed: true`, where the original returned `201`. Reusing a key with a *different* body is a mistake rather than a retry, and fails with [`idempotency_key_reused`](../reference/errors.md#idempotency_key_reused). Derive keys from something stable in your domain — `order-8812-receipt`, not a fresh UUID per attempt. Full semantics in [Conventions](../reference/conventions.md#idempotency).
+A replay returns `200` with `Idempotent-Replayed: true`, where the original returned `201`. Reusing a key with a _different_ body is a mistake rather than a retry, and fails with [`idempotency_key_reused`](../reference/errors.md#idempotency_key_reused). Derive keys from something stable in your domain — `order-8812-receipt`, not a fresh UUID per attempt. Full semantics in [Conventions](../reference/conventions.md#idempotency).
 
 ## Reading the response
 
@@ -171,6 +171,7 @@ The send response is the email plus two fields worth checking on every call:
 | `status` | `string` | - | queued, sending, sent, or scheduled at this point — delivery outcomes arrive later, by webhook. |
 | `suppressed` | `string[]` | - | Recipients dropped before sending because they're on a suppression list. Not an error — read it. |
 | `pacing` | `object \| null` | - | Non-null when a pacing rule is holding the message: held_by names the rule, estimated_send_at is the projection. |
+| `sandbox` | `boolean` | - | true when the workspace is a sandbox: the email is reported on but never delivered. See Sandbox. |
 
 ```ts
 const email = await aiinbx.emails.send(payload)
@@ -198,7 +199,7 @@ See [Pacing](pacing.md) for what the rules do in the first place.
 
 `suppression_key` names the list this send is checked against — a campaign, a product, a tenant. Omit it and the send is checked against the workspace’s `*` list and, when sending from a space, that space’s `*` list. A named key adds the matching lists at both levels.
 
-`unsubscribe: true` marks the message as optional mail: it adds one-click unsubscribe headers, and lets a recipient opt out of *this* list without blocking your transactional mail. Place the link yourself with `{{unsubscribe_url}}` in the body, or one is appended at the end. The link is personal, so such a send takes exactly one recipient across `to`, `cc` and `bcc`; more fails with `400` [`unsubscribe_single_recipient`](../reference/errors.md#unsubscribe_single_recipient). [Suppressions](suppressions.md) covers both.
+`unsubscribe: true` marks the message as optional mail: it adds one-click unsubscribe headers, and lets a recipient opt out of _this_ list without blocking your transactional mail. Place the link yourself with `{{unsubscribe_url}}` in the body, or one is appended at the end. The link is personal, so such a send takes exactly one recipient across `to`, `cc` and `bcc`; more fails with `400` [`unsubscribe_single_recipient`](../reference/errors.md#unsubscribe_single_recipient). [Suppressions](suppressions.md) covers both.
 
 ```json
 { "suppression_key": "product-updates", "unsubscribe": true }
@@ -228,7 +229,10 @@ Nothing on the request names a [space](spaces.md). The email is in the space `fr
 Lists take `space` to narrow to one space:
 
 ```ts
-for await (const email of aiinbx.emails.list({ space: "spc_...", direction: "inbound" })) {
+for await (const email of aiinbx.emails.list({
+  space: "spc_...",
+  direction: "inbound",
+})) {
   console.log(email.from.address, email.subject)
 }
 ```

@@ -61,13 +61,23 @@ client = AIInbx(
 ```
 | Prop | Type | Default | Description |
 | - | - | - | - |
-| `api_key?` | `str \| None` | - | Defaults to AI_INBX_API_KEY. A missing key raises ValueError at construction. |
+| `api_key?` | `str \| None` | - | Defaults to AI_INBX_API_KEY. Without one, the client makes only `sandboxes.create`; any other call raises `AIInbxError`. |
 | `base_url?` | `str` | `"https://api.aiinbx.com/api/v2"` | Point at a local or self-hosted API. |
 | `timeout?` | `float \| httpx.Timeout` | `60.0` | Seconds, or an httpx.Timeout for per-phase control. |
-| `max_retries?` | `int` | `2` | 0–5. Retries: a 429 always; network errors, 408 and 5xx when a retry can't act twice (a GET, PUT or DELETE, or a keyed send, reply or forward). |
+| `max_retries?` | `int` | `2` | 0–5. Retries: a 429 with a Retry-After of a minute or less always; network errors, 408 and 5xx when a retry can't act twice (a GET, PUT or DELETE, or a keyed send, reply or forward). |
 | `http_client?` | `httpx.Client \| httpx.AsyncClient \| None` | - | Bring your own — for proxies, custom transports, or a shared pool. |
 | `default_headers?` | `Mapping[str, str] \| None` | - | Headers added to every request. |
 
+## Start in a sandbox
+
+`sandboxes.create` is the one call that takes no API key. It creates a [sandbox](../guides/sandbox.md) workspace and returns a `full` key for it, this once:
+
+```python
+with AIInbx() as anonymous:
+    sandbox = anonymous.sandboxes.create({"name": "Yourapp"})
+
+client = AIInbx(api_key=sandbox["api_key"]["key"])
+```
 ## Resources
 
 Each API resource is an attribute of the client — `client.emails`, `client.webhook_endpoints`, `client.pacing_rules` — and every endpoint page in the [API reference](../api/README.md) shows its Python call.

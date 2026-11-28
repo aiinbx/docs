@@ -24,9 +24,11 @@ This skill points you at the AI Inbx docs, at https://docs.aiinbx.com/. When a t
 ## Pages
 
 - [AI Inbx documentation](https://docs.aiinbx.com/index.md): Learn to send and receive email, manage conversation threads, and build AI email agents with the AI Inbx API, TypeScript SDK, and Python SDK.
-- [Quickstart](https://docs.aiinbx.com/quickstart.md): Get started with AI Inbx: add a sending domain, send your first email with the SDK, and receive the reply through a verified webhook.
+- [Quickstart](https://docs.aiinbx.com/quickstart.md): Get started with AI Inbx in a sandbox: get an API key, send your first email with the SDK, and answer the reply through a verified webhook.
 - [Core concepts](https://docs.aiinbx.com/concepts.md): The building blocks of AI Inbx: workspaces, sending identities, emails, threads, events, and the spaces that keep each customer's mail apart.
 - [Authentication](https://docs.aiinbx.com/authentication.md): Authenticate with Bearer API keys: the three scopes and what each one reaches, how to keep keys server-side, and how to rotate and delete them.
+- [Sandbox](https://docs.aiinbx.com/guides/sandbox.md): Build and test AI Inbx in a sandbox workspace: no account or plan, simulated delivery and inbound mail, real webhooks, and its limits.
+- [Claim and go live](https://docs.aiinbx.com/guides/going-live.md): Hand a sandbox to a person with a claim link, then go live: the plan it needs, what is cleared, what keep keeps, and what happens to domains.
 - [Going to production](https://docs.aiinbx.com/guides/production.md): Go to production with AI Inbx: reliable, idempotent sends, durable webhook processing, customer boundaries, and monitoring of delivery outcomes.
 - [Plans and billing](https://docs.aiinbx.com/guides/billing.md): What each plan includes, exactly what counts against it, how extra usage and spending caps work, and what the API answers at a limit.
 
@@ -94,6 +96,10 @@ This skill points you at the AI Inbx docs, at https://docs.aiinbx.com/. When a t
 
 - [API Keys API](https://docs.aiinbx.com/api/api-keys.md): Use the AI Inbx api keys API. Browse endpoints, request parameters, response schemas, and code examples for your integration.
 
+#### Sandbox
+
+- [Sandbox API](https://docs.aiinbx.com/api/sandbox.md): Use the AI Inbx sandbox API. Browse endpoints, request parameters, response schemas, and code examples for your integration.
+
 ### Sending
 
 - [Sending](https://docs.aiinbx.com/guides/sending.md): Addresses, HTML and text bodies, attachments, custom headers, idempotency, and what the send response tells you.
@@ -153,7 +159,7 @@ This skill points you at the AI Inbx docs, at https://docs.aiinbx.com/. When a t
 - [MCP server](https://docs.aiinbx.com/mcp.md): Run AI Inbx from Claude, ChatGPT, Cursor, VS Code, Codex or any MCP client, or give it an inbox of its own: two servers, signed in as you or with an API key.
 - [MCP tools](https://docs.aiinbx.com/mcp/tools.md): Every tool the AI Inbx MCP servers offer, with its arguments and what a client is told about it before it runs.
 - [CLI](https://docs.aiinbx.com/cli.md): The aiinbx command line: send and read mail, call every API resource, forward webhooks to localhost without a tunnel, and check a domain's DNS.
-- [Agent skills](https://docs.aiinbx.com/skills.md): Agent skills for AI Inbx: let a coding agent set up the CLI, sign in, wire sending and receiving into your app, and verify one email and its reply end to end.
+- [Agent skills](https://docs.aiinbx.com/skills.md): Agent skills for AI Inbx: a coding agent creates a sandbox, wires email into your app, verifies a round trip, and hands you a link to go live.
 - [Give your agent an inbox](https://docs.aiinbx.com/guides/agent-inbox.md): Connect Claude Code, Cursor or the aiinbx CLI to an inbox — an email address of its own that it sends from and reads, and nothing else in your workspace.
 - [Documentation for agents](https://docs.aiinbx.com/reference/agents.md): Machine-readable docs for coding agents: llms.txt, Markdown copies of every page, the OpenAPI document, and the rules for implementing AI Inbx.
 

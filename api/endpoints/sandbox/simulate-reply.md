@@ -1,0 +1,7 @@
+# Simulate a reply
+
+[View on docs.aiinbx.com](https://docs.aiinbx.com/api/endpoints/sandbox/simulate-reply)
+
+Answers an email the sandbox sent, as one of its recipients would: to its Reply-To, else its sender, with `Re:` before the subject, the email quoted below, and `In-Reply-To` and `References` naming it. It then arrives like any inbound email, in the email's thread when it lands in the same space; with `headers` such as `Auto-Submitted: auto-replied` it is an automatic reply. `from` defaults to the email's first `to`. An email that has not gone out fails with 409 `not_sent`, and one whose Reply-To names nobody of the workspace with 422 `recipient_unknown`. Each copy filed counts as one of the sandbox's emails for the day, and past them the request fails with 429 `sandbox_limit_reached`. On a live workspace it fails with 403 `sandbox_only`. A send can also be answered on its own: in a sandbox, mail to `reply@simulator.aiinbx.com` is delivered and then answered, each copy of the answer one of the day's emails, mail to `bounce@simulator.aiinbx.com` bounces, and mail to `complaint@simulator.aiinbx.com` is delivered and then marked as spam. Mail to an address of the workspace is reported delivered and also arrives there as an inbound email, each copy filed one of the day's emails; once they are used up, the send is still reported delivered and no copy is filed. Every other address is reported delivered, and nothing leaves AI Inbx.
+
+`POST /sandbox/emails/{email_id}/reply`

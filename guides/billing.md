@@ -4,9 +4,11 @@ What each plan includes, exactly what counts against it, how extra usage and spe
 
 [View on docs.aiinbx.com](https://docs.aiinbx.com/guides/billing)
 
-A workspace is on one monthly plan. The plan includes an allowance of emails and advanced attachment processing pages, and sets how many custom domains, mailboxes, and pacing rules the workspace can hold. Plans differ only in those numbers.
+A live workspace is on one monthly plan. The plan includes an allowance of emails and advanced attachment processing pages, and sets how many custom domains, mailboxes, and pacing rules the workspace can hold. Plans differ only in those numbers.
 
 All prices are in USD and exclude applicable taxes.
+
+A new workspace starts as a [sandbox](sandbox.md): it needs no plan, is billed nothing, and has limits of its own. A plan is needed to [go live](going-live.md), and counting starts from then.
 
 ## Plans
 
@@ -76,10 +78,10 @@ Receiving is never blocked. What stops depends on which allowance ran out:
 
 A refused request answers `402` with `application/problem+json`. Two codes cover every case:
 
-| Code                                                       | Meaning                                                                                                              |
-| ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| [`plan_required`](../reference/errors.md#plan_required)         | The workspace has no plan. Every metered request is refused until one is chosen.                                     |
-| [`allowance_reached`](../reference/errors.md#allowance_reached) | The plan's allowance for that feature is used up, and extra usage is off or its cap is reached. `detail` says which. |
+| Code                                                       | Meaning                                                                                                                           |
+| ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| [`plan_required`](../reference/errors.md#plan_required)         | The workspace is live and has no plan, or going live was asked without one. Every metered request is refused until one is chosen. |
+| [`allowance_reached`](../reference/errors.md#allowance_reached) | The plan's allowance for that feature is used up, and extra usage is off or its cap is reached. `detail` says which.              |
 
 ```json
 {

@@ -47,6 +47,32 @@ A login acts for your account in the workspaces you grant it. When it reaches mo
 
 Credentials are taken from `--api-key` first, then `AI_INBX_API_KEY`, then the signed-in profile. A profile's secret is kept in the macOS Keychain, the Secret Service on Linux, or DPAPI on Windows. `-p <name>` or `AI_INBX_PROFILE` picks a profile, and `aiinbx auth switch <name>` makes one the default.
 
+## Sandbox
+
+`aiinbx sandboxes create` needs no login. It creates a [sandbox](guides/sandbox.md) workspace with no members and signs the current profile in with the sandbox's `full` API key, so the next command acts in the sandbox. `--env-file <path>` also appends the key to that file as `AI_INBX_API_KEY=`, creating the file if it does not exist, for your app to read:
+
+```sh
+aiinbx sandboxes create --name "Yourapp" --env-file .env.local
+```
+The key is printed once, in `api_key.key` of the JSON output. The command refuses to replace a credential: when the profile is signed in already, it stops before creating anything and asks for another profile (`aiinbx sandboxes create -p yourapp-sandbox`), and it stops the same way when the env file sets `AI_INBX_API_KEY` already. A key passed with `--api-key` or `AI_INBX_API_KEY` still wins over the profile in later commands, so leave it out to act in the sandbox.
+
+Signed in, `aiinbx workspaces create` adds a sandbox to your account for a new project. You own it, the login acts in it with `--workspace <id>` (the `id` it returns) or `aiinbx workspace use <slug>`, and `--env-file <path>` writes its `full` key into that file the same way:
+
+```bash
+aiinbx workspaces create --name "Yourapp" --env-file .env.local
+```
+The sandbox's commands, with that profile or any key of a sandbox:
+
+```sh
+aiinbx sandbox-emails receive --from "Dana <dana@example.net>" \
+  --to support@yourapp.aiinbx.app --subject "Order 1042" --text "Where is it?"
+aiinbx sandbox-emails reply eml_123 --text "Thanks, that solves it."
+aiinbx claim-links create          # a link for the person who will own it
+```
+`sandbox-emails receive` writes an email in from outside, and `sandbox-emails reply` answers one the sandbox sent. `claim-links create` returns a `url` to hand to a person; it works once, for 7 days. `aiinbx whoami` lists `sandbox` for each workspace, and `aiinbx doctor` names a sandbox in its workspace check.
+
+`aiinbx workspaces go-live` makes the workspace live. It needs a plan and an owner: a sandbox nobody has claimed answers `403` `forbidden`. Only a workspace admin can run it: a person signed in with `aiinbx login`, or a key an admin created. The keys a sandbox had when it was claimed are the owner's, so they can run it once the workspace has a plan. It says what will be removed and asks first (`--yes` skips that), then waits until the workspace is live; Ctrl+C stops the waiting, and going live continues. `--no-keep` removes the API keys, webhook endpoints, domains and settings too; run with one of those keys, the command returns without waiting, since the key stops working once going live is done. See [Claim and go live](guides/going-live.md).
+
 ## Commands
 
 Every API operation is a command, `aiinbx <resource> <operation>`. Path parameters are arguments and fields are flags. A resource on its own lists it:
@@ -232,6 +258,8 @@ Errors go to stderr. In JSON mode an error is one object:
   }
 }
 ```
+For some codes the error also carries a `hint` with what to do next, such as `aiinbx claim-links create` on `sandbox_unavailable` in a sandbox nobody has claimed.
+
 | Exit code | Meaning                                                                                    |
 | --------- | ------------------------------------------------------------------------------------------ |
 | `0`       | It worked.                                                                                 |
@@ -255,6 +283,8 @@ $ aiinbx login --device --non-interactive
 $ aiinbx login --complete
 ```
 Or skip the login and pass a key: `AI_INBX_API_KEY=... aiinbx emails list`.
+
+With nobody to sign in, an agent can start from a [sandbox](#sandbox) instead: `aiinbx sandboxes create` takes no credential, and `aiinbx claim-links create` later hands the workspace to a person.
 
 `aiinbx commands` prints the whole command tree as JSON, with every argument and flag and the API operation behind each command. An agent can read it once instead of parsing `--help`.
 

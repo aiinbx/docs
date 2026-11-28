@@ -94,6 +94,8 @@ Publish the exact names, types, and values returned by the API. Check existing r
 
 ## Verifying
 
+In a [sandbox](sandbox.md#domains), a domain is verified as it is added, with no DNS. Its records are published once the workspace [goes live](going-live.md#what-happens-to-domains), when it goes back to pending and is checked as below.
+
 Publishing DNS doesn't tell us anything by itself, so ask for a check:
 
 ```ts TypeScript

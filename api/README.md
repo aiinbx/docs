@@ -62,6 +62,10 @@ Set sending rules and inspect or release held mail.
 
 Rename the workspace and set tracking defaults for new domains.
 
+**[Sandbox](sandbox.md)**
+
+Create a sandbox without an account, simulate mail, and hand it on.
+
 **[Members](members.md)**
 
 Invite people, change their roles, and remove them.

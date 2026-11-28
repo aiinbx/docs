@@ -4,7 +4,7 @@ Every tool the AI Inbx MCP servers offer, with its arguments and what a client i
 
 [View on docs.aiinbx.com](https://docs.aiinbx.com/mcp/tools)
 
-The workspace [MCP server](README.md), `aiinbx`, offers 25 tools for the daily work, and reaches the other 47 operations of the API through four generic tools. Each is an [API operation](../api/README.md) under another name, taking the same fields and answering with its JSON, trimmed for a model: `html` and `stripped_html` are left out where text says the same, an answer longer than 40,000 characters is cut with a note saying so, an empty success reads `Done.`, a failure is a tool error carrying the status, `code` and `detail`, and [outside content](#labels) comes wrapped in `<external_data>`.
+The workspace [MCP server](README.md), `aiinbx`, offers 27 tools for the daily work, and reaches the other 50 operations of the API through four generic tools. Each is an [API operation](../api/README.md) under another name, taking the same fields and answering with its JSON, trimmed for a model: `html` and `stripped_html` are left out where text says the same, an answer longer than 40,000 characters is cut with a note saying so, an empty success reads `Done.`, a failure is a tool error carrying the status, `code` and `detail`, and [outside content](#labels) comes wrapped in `<external_data>`.
 
 Every tool also takes `workspace_id`. When a sign-in reaches more than one workspace, the assistant finds the ids with `aiinbx_workspaces_list` and names one on every call.
 
@@ -28,7 +28,7 @@ Each tool tells the client what it does before it runs. Clients use this to deci
 
 Writes Reaches outside
 
-Sends an email — or, with `draft: true`, writes it for a person to review and send. Requires a `from` address on a verified domain or a connected mailbox, and at least one of `html` or `text`. `thread_id` continues a conversation; to answer a message AI Inbx has not seen — mail from before a migration, or from another provider — name it in `in_reply_to` and `references` instead. Recipients on a matching suppression list are dropped and reported in `suppressed`; a pacing rule that holds the message is reported in `pacing`. Pass `Idempotency-Key` so a retry after a timeout replays the original send instead of sending twice. A workspace with no plan fails with 402 `plan_required`, and one that has used its plan's emails for the month with 402 `allowance_reached`.
+Sends an email — or, with `draft: true`, writes it for a person to review and send. Requires a `from` address on a verified domain or a connected mailbox, and at least one of `html` or `text`. `thread_id` continues a conversation; to answer a message AI Inbx has not seen — mail from before a migration, or from another provider — name it in `in_reply_to` and `references` instead. Recipients on a matching suppression list are dropped and reported in `suppressed`; a pacing rule that holds the message is reported in `pacing`. Pass `Idempotency-Key` so a retry after a timeout replays the original send instead of sending twice. A live workspace with no plan fails with 402 `plan_required`, and one that has used its plan's emails for the month with 402 `allowance_reached`; a sandbox needs no plan, and counts the send as one of its emails for the day, past them 429 `sandbox_limit_reached`.
 
 | Prop | Type | Default | Description |
 | - | - | - | - |
@@ -114,7 +114,7 @@ Changes an email that has not gone out — a `draft` or a `scheduled` one: its r
 
 Writes Reaches outside
 
-Sends a draft: at the `scheduled_at` given, else at the draft's own while it is still ahead, else now. From here it is a `scheduled` email — counted against the plan, and composed again when it goes. Anything but a draft returns 409 `not_draft`; a workspace out of emails returns 402.
+Sends a draft: at the `scheduled_at` given, else at the draft's own while it is still ahead, else now. From here it is a `scheduled` email — counted against the plan, and composed again when it goes. Anything but a draft returns 409 `not_draft`; a live workspace out of emails returns 402.
 
 | Prop | Type | Default | Description |
 | - | - | - | - |
@@ -171,7 +171,7 @@ Returns a thread with its messages inline, oldest first. Messages paginate indep
 
 Writes Reaches outside
 
-Replies within a thread. The sender, recipients, subject, and the `In-Reply-To` and `References` headers are inferred from the conversation, as a mail client infers them from the email answered: `email_id`, or the thread's latest. The reply follows that email's Reply-To; one that names only your own addresses is refused with 400 `no_recipients` rather than guessed around. Only the content is required — set `reply_all` or the individual fields to override what is inferred. Suppression and pacing behave exactly as on a send; an `Idempotency-Key` is bound to the request, so a retry replays the reply even after the thread has moved on. So does the plan: 402 `plan_required` without one, 402 `allowance_reached` once its emails are used up.
+Replies within a thread. The sender, recipients, subject, and the `In-Reply-To` and `References` headers are inferred from the conversation, as a mail client infers them from the email answered: `email_id`, or the thread's latest. The reply follows that email's Reply-To; one that names only your own addresses is refused with 400 `no_recipients` rather than guessed around. Only the content is required — set `reply_all` or the individual fields to override what is inferred. Suppression and pacing behave exactly as on a send; an `Idempotency-Key` is bound to the request, so a retry replays the reply even after the thread has moved on. So does the plan: in a live workspace 402 `plan_required` without one, 402 `allowance_reached` once its emails are used up; a sandbox needs none, and counts each as one of its emails for the day, past them 429 `sandbox_limit_reached`.
 
 | Prop | Type | Default | Description |
 | - | - | - | - |
@@ -202,7 +202,7 @@ Replies within a thread. The sender, recipients, subject, and the `In-Reply-To` 
 
 Writes Reaches outside
 
-Sends the whole thread as one email to recipients who were not on it. Every message is rendered into one transcript, oldest first, each turn as what its author wrote with quoted tails and repeated signatures removed; the thread's attachments ride along unless `include_attachments` is false, and `note` is placed above the transcript. Only `to` is required: the sender defaults to the thread's mailbox and the subject to `Fwd:` and the thread's. The forward opens a thread of its own, linked back through `forward_of`, so a later reply on the original still goes to its participants and replies to the forward land on the forward. Suppression, pacing, scheduling, and idempotency behave exactly as on a send. So does the plan: 402 `plan_required` without one, 402 `allowance_reached` once its emails are used up.
+Sends the whole thread as one email to recipients who were not on it. Every message is rendered into one transcript, oldest first, each turn as what its author wrote with quoted tails and repeated signatures removed; the thread's attachments ride along unless `include_attachments` is false, and `note` is placed above the transcript. Only `to` is required: the sender defaults to the thread's mailbox and the subject to `Fwd:` and the thread's. The forward opens a thread of its own, linked back through `forward_of`, so a later reply on the original still goes to its participants and replies to the forward land on the forward. Suppression, pacing, scheduling, and idempotency behave exactly as on a send. So does the plan: in a live workspace 402 `plan_required` without one, 402 `allowance_reached` once its emails are used up; a sandbox needs none, and counts each as one of its emails for the day, past them 429 `sandbox_limit_reached`.
 
 | Prop | Type | Default | Description |
 | - | - | - | - |
@@ -246,7 +246,7 @@ Lists the workspace's sending domains with their verification state and tracking
 
 Writes
 
-Registers a sending domain and returns the DNS records to publish: SPF, DKIM, DMARC, a return path, and an MX record for receiving. `region` selects the regional mail infrastructure for this domain; it can be changed with `PATCH /domains/{domain_id}` until the domain is verified.
+Registers a sending domain and returns the DNS records to publish: SPF, DKIM, DMARC, a return path, and an MX record for receiving. In a sandbox the domain is verified at once and its records are published only at go live: one published now sends real mail for the domain to a sandbox, which takes no mail from outside. `region` selects the regional mail infrastructure for this domain; it can be changed with `PATCH /domains/{domain_id}` until the domain is verified.
 
 A wildcard — `*.acme.dev` — is verified once and covers every subdomain: the MX record goes at `*.acme.dev`, the rest at `acme.dev`, and the apex keeps whatever mail setup it has. A name one label under a wildcard of yours — `hi.acme.dev` under `*.acme.dev` — is created as a subdomain of it: no records, verified as soon as the wildcard is, in whatever `space_id` you give it. That is how a platform hands each customer an address of their own without touching DNS again. To give customers single addresses of one shared domain instead, assign each address to its customer's space with `POST /addresses`.
 
@@ -254,7 +254,7 @@ A domain name can be connected in several spaces and workspaces, but sending and
 
 Every workspace already has one domain it did not add: `<slug>.aiinbx.app`, listed with `provided: true`. It is verified through our zone, has no records and cannot be deleted; a name under `aiinbx.app` cannot be added by hand and fails with `reserved_domain`.
 
-A domain of its own counts against the plan's custom domains — a subdomain under a wildcard and the provided domain do not. With none left the request fails with 402 `allowance_reached`, and a workspace with no plan with 402 `plan_required`.
+A domain of its own counts against the plan's custom domains — a subdomain under a wildcard and the provided domain do not. With none left the request fails with 402 `allowance_reached`, and a live workspace with no plan with 402 `plan_required`; a sandbox holds at most 10 custom domains and 100 subdomains, past them 403 `sandbox_unavailable`.
 
 `track_opens` and `track_clicks` set the domain's `tracking`; what they leave out starts as the workspace's tracking defaults in the console say — off unless they are set there — or, on a subdomain, as its wildcard's. Change either afterwards with `PATCH /domains/{domain_id}`.
 
@@ -311,7 +311,7 @@ Deletes a domain and stops future sends from it. Remove the published DNS record
 
 Writes
 
-Checks the domain's DNS records against live DNS now. `verified_at` stays null until the sending identity’s DKIM verification succeeds; inbound MX, SPF, and DMARC readiness are separate. DNS propagation usually takes minutes and occasionally hours, so poll at a sane interval or subscribe to the `domain.verified` webhook instead. Domains are also rechecked in the background: a verified domain whose DKIM record stops resolving gets `dkim_missing_since`, keeps sending, and `domain.at_risk` is sent; `domain.restored` follows if the record is back, and has held for an hour, by `stops_sending_at`, otherwise it loses `verified_at` and `domain.lost` is sent.
+Checks the domain's DNS records against live DNS now; in a sandbox, where domains need no records until go live, it reads no DNS. `verified_at` stays null until the sending identity’s DKIM verification succeeds; inbound MX, SPF, and DMARC readiness are separate. DNS propagation usually takes minutes and occasionally hours, so poll at a sane interval or subscribe to the `domain.verified` webhook instead. Domains are also rechecked in the background: a verified domain whose DKIM record stops resolving gets `dkim_missing_since`, keeps sending, and `domain.at_risk` is sent; `domain.restored` follows if the record is back, and has held for an hour, by `stops_sending_at`, otherwise it loses `verified_at` and `domain.lost` is sent.
 
 | Prop | Type | Default | Description |
 | - | - | - | - |
@@ -402,6 +402,18 @@ It takes no arguments beyond `workspace_id`.
 
 `GET /workspaces` · [API reference](../api/endpoints/workspace/list-workspaces.md)
 
+### `aiinbx_workspaces_create`
+
+Writes
+
+Creates a workspace for the person the request acts for, who owns it, and returns an API key for it with `full` scope; the secret is in `api_key.key` exactly once. Like every new workspace it starts as a sandbox, with its provided domain, `<slug>.aiinbx.app`, and goes live when its owner chooses a plan and presses Go live. A token keeps working in it at once: the workspace joins what its connection was granted. An API key acts for the person who created it; a key of a sandbox nobody has claimed acts for nobody and fails with 403 `forbidden` (`POST /sandboxes` creates one without an account). A person owns at most 20 sandboxes; past them the request fails with 403 `sandbox_unavailable`.
+
+| Prop | Type | Default | Description |
+| - | - | - | - |
+| `name` | `string` | - | The workspace's name; its slug and provided domain follow it. |
+
+`POST /workspaces` · [API reference](../api/endpoints/workspace/create-workspace.md)
+
 ### `aiinbx_workspaces_retrieve`
 
 Read-only
@@ -426,6 +438,18 @@ Renames the workspace, changes its tracking defaults or switches `thread_across_
 
 `PATCH /workspace` · [API reference](../api/endpoints/workspace/update-workspace.md)
 
+### `aiinbx_workspaces_go_live`
+
+Destructive
+
+Makes a sandbox a live workspace: from then on its mail is delivered and received for real and billed to its plan. Everything the sandbox produced is removed first: emails, threads, attachments, events and webhook deliveries, suppressions, pacing counters, and every space with everything in it. With `keep`, the default, API keys, webhook endpoints, domains, pacing rules and settings stay; kept domains go back to pending and verify through their DNS records like any domain added to a live workspace. The workspace needs a plan, a free one included; without one the request fails with 402 `plan_required`. A sandbox nobody has claimed fails with 403 `forbidden`: a person claims it first, through a claim link (`POST /claim-links`). It returns at once with `going_live` true, and the workspace stays a sandbox until the removal is done, usually within minutes. Meanwhile every API change fails with 409 `going_live`, and reads answer what the workspace keeps outside spaces, such as domains, API keys and webhook endpoints, while its mail and everything in its spaces are being removed. A workspace that is already live fails with 409 `already_live`. Admin only.
+
+| Prop | Type | Default | Description |
+| - | - | - | - |
+| `keep?` | `boolean` | - | Keep what is set up: API keys, webhook endpoints, domains, pacing rules and settings. False empties the workspace: every API key is revoked, this one too, webhook endpoints, domains and rules are removed and settings go back to their defaults. The provided domain and its built-in rules stay either way. |
+
+`POST /workspace/go-live` · [API reference](../api/endpoints/workspace/go-live-workspace.md)
+
 ## Attachments
 
 ### `aiinbx_attachments_content`
@@ -442,7 +466,7 @@ Redirects to a short-lived signed URL for the attachment's prepared text — Mar
 
 ## Everything else
 
-The rest of the API — spaces, API keys, mailboxes, OAuth apps, webhooks, events, pacing and members — goes through four tools, so a client does not load 47 more definitions into every turn:
+The rest of the API (spaces, API keys, mailboxes, OAuth apps, webhooks, events, pacing, members and sandbox) goes through four tools, so a client does not load 50 more definitions into every turn:
 
 | Tool | What it does | Labels |
 | --- | --- | --- |
@@ -539,3 +563,11 @@ The rest of the API — spaces, API keys, mailboxes, OAuth apps, webhooks, event
 | `invitations_list` | Lists the invitations nobody has answered, newest first — lapsed ones too, past their `expires_at`: those can no longer be accepted, and inviting the address again sends a fresh one. | Read-only | [`GET`](../api/endpoints/members/list-invitations.md) |
 | `invitations_create` | Mails an invitation to join the workspace, with a link that is good for seven days. | Writes Reaches outside | [`POST`](../api/endpoints/members/create-invitation.md) |
 | `invitations_cancel` | Cancels an invitation that is waiting to be accepted; the link in the mail stops working. | Destructive | [`DELETE`](../api/endpoints/members/cancel-invitation.md) |
+
+### Sandbox
+
+| Operation | What it does | Labels | API |
+| --- | --- | --- | --- |
+| `claim_links_create` | Creates a link for a person to claim a workspace nobody is a member of yet: one made with `POST /sandboxes`. | Writes | [`POST`](../api/endpoints/sandbox/create-claim-link.md) |
+| `sandbox_emails_receive` | Writes an email into a sandbox as if it came from outside. | Writes Reaches outside | [`POST`](../api/endpoints/sandbox/simulate-inbound-email.md) |
+| `sandbox_emails_reply` | Answers an email the sandbox sent, as one of its recipients would: to its Reply-To, else its sender, with `Re:` before the subject, the email quoted below, and `In-Reply-To` and `References` naming it. | Writes Reaches outside | [`POST`](../api/endpoints/sandbox/simulate-reply.md) |

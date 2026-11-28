@@ -8,14 +8,14 @@ A production integration needs to recover from uncertain send results, duplicate
 
 ## Understand what success means
 
-| Signal | Meaning | Application action |
-| --- | --- | --- |
-| Successful send response | An email resource was created or an existing request was replayed | Store the email and thread IDs; inspect `status`, `suppressed`, and `pacing` |
-| `email.sent` | The sending provider accepted the message | Record provider acceptance; do not mark inbox delivery |
-| `email.delivered` | A delivery confirmation was received | Record the reported delivery; it does not prove the recipient read the message |
-| `email.bounced` | A delivery failure was reported | Inspect each recipient's cause and whether it was suppressed |
-| `email.complained` | A recipient complaint was reported | Update your application state and inspect suppression handling |
-| HTTP timeout | Your application did not receive a complete result | Retry the same operation with the same key and payload |
+| Signal                   | Meaning                                                           | Application action                                                             |
+| ------------------------ | ----------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Successful send response | An email resource was created or an existing request was replayed | Store the email and thread IDs; inspect `status`, `suppressed`, and `pacing`   |
+| `email.sent`             | The sending provider accepted the message                         | Record provider acceptance; do not mark inbox delivery                         |
+| `email.delivered`        | A delivery confirmation was received                              | Record the reported delivery; it does not prove the recipient read the message |
+| `email.bounced`          | A delivery failure was reported                                   | Inspect each recipient's cause and whether it was suppressed                   |
+| `email.complained`       | A recipient complaint was reported                                | Update your application state and inspect suppression handling                 |
+| HTTP timeout             | Your application did not receive a complete result                | Retry the same operation with the same key and payload                         |
 
 Available outcomes depend on the sending provider. Check the [event reference](../webhooks/events/README.md) for provider-specific behavior. Events can arrive more than once and out of order.
 
@@ -95,15 +95,15 @@ Record operation IDs, email IDs, thread IDs, event IDs, and `X-Request-ID` along
 
 Monitor these conditions:
 
-| Condition | Where to investigate |
-| --- | --- |
-| Failed webhook deliveries | [Delivery attempts and replay](../webhooks/README.md#inspecting-deliveries) |
-| Mail held longer than expected | [Pacing queue](pacing.md#the-queue) and scheduled time |
+| Condition                                 | Where to investigate                                                                  |
+| ----------------------------------------- | ------------------------------------------------------------------------------------- |
+| Failed webhook deliveries                 | [Delivery attempts and replay](../webhooks/README.md#inspecting-deliveries)                       |
+| Mail held longer than expected            | [Pacing queue](pacing.md#the-queue) and scheduled time                           |
 | Sending domain's DKIM record goes missing | [`domain.at_risk`](../webhooks/events/domain-at-risk.md), 72 hours before it stops sending |
-| Sending domain loses verification | [`domain.lost`](../webhooks/events/domain-lost.md) and domain diagnostics |
-| Connected account needs authorization | [`mailbox.needs_reauth`](../webhooks/events/mailbox-needs-reauth.md) |
-| Recipients excluded or rejected | `suppressed`, bounce events, and [suppression lists](suppressions.md) |
-| Repeated API failures | Structured error code and request ID |
+| Sending domain loses verification         | [`domain.lost`](../webhooks/events/domain-lost.md) and domain diagnostics                  |
+| Connected account needs authorization     | [`mailbox.needs_reauth`](../webhooks/events/mailbox-needs-reauth.md)                       |
+| Recipients excluded or rejected           | `suppressed`, bounce events, and [suppression lists](suppressions.md)            |
+| Repeated API failures                     | Structured error code and request ID                                                  |
 
 Automatic webhook retries have a bounded window. After fixing your handler, inspect failed deliveries and replay them. Disabling an endpoint does not queue events created while it is disabled — but every event is recorded whether or not an endpoint heard it, so a handler that was down, paused, or not yet subscribed [catches up from `GET /events`](../webhooks/README.md#catching-up).
 
@@ -113,7 +113,7 @@ Store the data your application needs for its own history and recovery. Attachme
 
 Review [Plans and billing](billing.md) for email and attachment-processing allowances, spending caps, and the API responses your application should handle when it reaches a limit.
 
-Exercise a complete send, delivery event, inbound reply, and thread reply with addresses you control. Also check that:
+In a [sandbox](sandbox.md), exercise a complete send, delivery event, inbound reply, and thread reply: send to `reply@simulator.aiinbx.com`, test failures with `bounce@` and `complaint@simulator.aiinbx.com`, and write inbound mail in with `sandboxEmails.receive`. Also check that:
 
 - An invalid webhook signature is rejected without creating work.
 - Concurrent deliveries of one event create one durable job.
@@ -122,4 +122,4 @@ Exercise a complete send, delivery event, inbound reply, and thread reply with a
 - A customer cannot read or send through another customer's resources.
 - Operators can find a failed delivery and replay it after a fix.
 
-A synthetic webhook tests your endpoint and signature handling. It does not establish that DNS, provider delivery, or inbound routing works; test those with an actual message.
+A sandbox and a synthetic webhook test your endpoint, signature handling and workflow. They do not establish that DNS, provider delivery, or inbound routing works. After [going live](going-live.md), publish your domains' records and test those with an actual message to and from addresses you control.

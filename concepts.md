@@ -6,6 +6,8 @@ The building blocks of AI Inbx: workspaces, sending identities, emails, threads,
 
 A workspace contains your API keys, sending identities, messages, and configuration. Use the resources below to configure where mail comes from, work with conversations, and handle delivery outcomes.
 
+A workspace is a **sandbox** or **live**. Every new one starts as a [sandbox](guides/sandbox.md): the whole API, with no mail delivered, none arriving from outside, no plan and nothing billed. [Going live](guides/going-live.md) makes its mail real, once a person has chosen a plan. `sandbox` on the workspace, on every email and on every webhook event says which one it happened in.
+
 ## The two halves
 
 Everything here divides cleanly. On one side are the objects that establish **who you can send as**: a domain you publish DNS for, or a mailbox a customer authorized. On the other are the objects that carry **what you sent and what came back**: emails, threads, and the events they emit.
@@ -170,8 +172,12 @@ When you need one, and a platform walkthrough end to end.
 4. **They reply**
 
     Their message is matched onto the same **thread** and arrives as
-    `email.received`, carrying the `thread_id` and a `category` that tells you
-    how the message was classified. Classification is a signal for your application, not proof of sender identity. An out-of-office or auto-reply that says its sender can't be reached carries `unavailable` (why, the day they're back, who to write to instead); see [What automated mail asks for](guides/receiving.md#what-automated-mail-asks-for).
+    `email.received`, carrying the `thread_id` and a `category` that tells you how
+    the message was classified. Classification is a signal for your application,
+    not proof of sender identity. An out-of-office or auto-reply that says its
+    sender can't be reached carries `unavailable` (why, the day they're back, who
+    to write to instead); see [What automated mail asks
+    for](guides/receiving.md#what-automated-mail-asks-for).
 
 5. **You reply**
 

@@ -38,10 +38,10 @@ const aiinbx = new AIInbx({
 ```
 | Prop | Type | Default | Description |
 | - | - | - | - |
-| `apiKey?` | `string` | - | Defaults to AI_INBX_API_KEY where the runtime exposes environment variables. |
+| `apiKey?` | `string` | - | Defaults to AI_INBX_API_KEY where the runtime exposes environment variables. Without one, the client makes only `sandboxes.create`; any other call throws. |
 | `baseURL?` | `string` | `"https://api.aiinbx.com/api/v2"` | Point at a local or self-hosted API. |
 | `timeout?` | `number` | `60000` | Per-request timeout in milliseconds. |
-| `maxRetries?` | `number` | `2` | Retries: a 429 always; network errors, 408 and 5xx when a retry can't act twice (a GET, PUT or DELETE, or a keyed send, reply or forward). |
+| `maxRetries?` | `number` | `2` | Retries: a 429 with a Retry-After of a minute or less always; network errors, 408 and 5xx when a retry can't act twice (a GET, PUT or DELETE, or a keyed send, reply or forward). |
 | `fetch?` | `typeof fetch` | - | Supply your own fetch — for instrumentation or a proxy agent. |
 | `defaultHeaders?` | `HeadersInit` | - | Headers added to every request. |
 
@@ -55,6 +55,14 @@ await aiinbx.emails.send(payload, {
   signal: controller.signal,
   headers: { "X-Request-ID": traceId },
 })
+```
+## Start in a sandbox
+
+`sandboxes.create` is the one call that takes no API key. It creates a [sandbox](../guides/sandbox.md) workspace and returns a `full` key for it, this once:
+
+```ts
+const sandbox = await new AIInbx().sandboxes.create({ name: "Yourapp" })
+const aiinbx = new AIInbx({ apiKey: sandbox.api_key.key })
 ```
 ## Resources
 

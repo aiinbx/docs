@@ -12,6 +12,8 @@ This repository is generated from the live docs. Issues are welcome; edits get p
 - [Quickstart](quickstart.md)
 - [Core concepts](concepts.md)
 - [Authentication](authentication.md)
+- [Sandbox](guides/sandbox.md)
+- [Claim and go live](guides/going-live.md)
 - [Going to production](guides/production.md)
 - [Plans and billing](guides/billing.md)
 - Sending
@@ -180,8 +182,10 @@ This repository is generated from the live docs. Issues are welcome; edits get p
 - Workspace
   - [Workspace API](api/workspace.md)
   - [List workspaces](api/endpoints/workspace/list-workspaces.md)
+  - [Create a workspace](api/endpoints/workspace/create-workspace.md)
   - [Retrieve the workspace](api/endpoints/workspace/retrieve-workspace.md)
   - [Update the workspace](api/endpoints/workspace/update-workspace.md)
+  - [Go live](api/endpoints/workspace/go-live-workspace.md)
 - Members
   - [Members API](api/members.md)
   - [List members](api/endpoints/members/list-members.md)
@@ -195,6 +199,12 @@ This repository is generated from the live docs. Issues are welcome; edits get p
   - [List API keys](api/endpoints/api-keys/list-api-keys.md)
   - [Create an API key](api/endpoints/api-keys/create-api-key.md)
   - [Delete an API key](api/endpoints/api-keys/delete-api-key.md)
+- Sandbox
+  - [Sandbox API](api/sandbox.md)
+  - [Create a sandbox](api/endpoints/sandbox/create-sandbox.md)
+  - [Create a claim link](api/endpoints/sandbox/create-claim-link.md)
+  - [Simulate an inbound email](api/endpoints/sandbox/simulate-inbound-email.md)
+  - [Simulate a reply](api/endpoints/sandbox/simulate-reply.md)
 
 ## Other
 

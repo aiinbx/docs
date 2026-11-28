@@ -213,7 +213,8 @@ To check the workspace connection, ask:
 
 **Check that the assistant can reach AI Inbx.**
 
-> Which AI Inbx workspaces can you reach? For each, list its domains and whether they are verified.
+> Which AI Inbx workspaces can you reach? For each, list its domains and whether
+> they are verified.
 
 ### Inbox server
 
@@ -413,7 +414,7 @@ Add it beside the workspace server under its own name, `aiinbx-inbox`, and the c
 
 ### With an API key
 
-A client that cannot open a browser, such as one on a server, in CI or in a headless agent, can send an [API key](../authentication.md) to the workspace server instead of signing in. It then acts as the key: in the key's workspace, at the key's scope. Keep the key in the environment, never in a file you commit.
+A client that cannot open a browser, such as one on a server, in CI or in a headless agent, can send an [API key](../authentication.md) to the workspace server instead of signing in. It then acts as the key: in the key's workspace, at the key's scope. Keep the key in the environment, never in a file you commit. An agent without an account can use the key of a [sandbox](../guides/sandbox.md) it created with `POST /sandboxes`.
 
 **Claude Code**
 
@@ -493,26 +494,31 @@ The workspace server also serves the four [agent skills](../skills.md) through t
 
 **Triage the inbox.**
 
-> Go through the threads that got a new message today. Summarise each in a line, and tell me which need an answer from me.
+> Go through the threads that got a new message today. Summarise each in a line,
+> and tell me which need an answer from me.
 
 **Set up a domain.**
 
-> Add the domain mail.example.com in eu-central-1 and tell me exactly which DNS records to publish. When I say they are in, verify it and explain anything that still fails.
+> Add the domain mail.example.com in eu-central-1 and tell me exactly which DNS
+> records to publish. When I say they are in, verify it and explain anything
+> that still fails.
 
 **Look into a bounce.**
 
-> Why did my last emails to anyone at example.org bounce? Check the events, whether the addresses are now suppressed, and what I should do.
+> Why did my last emails to anyone at example.org bounce? Check the events,
+> whether the addresses are now suppressed, and what I should do.
 
 **Tune pacing.**
 
-> Only let mail from outreach@example.com go out on weekdays between 9:00 and 17:00 Berlin time, at most 50 an hour. Show me the rule before you create it.
+> Only let mail from outreach@example.com go out on weekdays between 9:00 and
+> 17:00 Berlin time, at most 50 an hour. Show me the rule before you create it.
 
 ## What it may do
 
 Signing in to the workspace server, you choose:
 
 - **Workspaces**: one or several of yours. With more than one, the assistant names the workspace on every call; `aiinbx_workspaces_list` tells it which it has.
-- **Access**: *Read*, *Read and send*, or *Full access*, the same three levels as an API key's scope.
+- **Access**: _Read_, _Read and send_, or _Full access_, the same three levels as an API key's scope.
 
 It never goes beyond your role. In a workspace where you are a member, the admin-only operations (API keys, members and invitations, workspace settings, deleting a space) stay closed to it as they are to you. Leaving a workspace, or losing a role, takes effect on its next call.
 
@@ -534,7 +540,7 @@ To a model, that looks much like a request from you. AI Inbx marks every tool th
 
 - Leave client confirmation on for tools that send or change what is sent: `aiinbx_emails_send`, `aiinbx_emails_send_draft`, `aiinbx_emails_update`, `aiinbx_threads_reply`, `aiinbx_threads_forward` and `aiinbx_api_write`. Don't allow them "always" in a session that reads inbound mail.
 - Have it send with `draft: true` when a person should read the mail first: it waits at `draft.review_url` to be edited and sent.
-- Sign in with *Read* when you only want the assistant to read, and with one workspace when it only needs one.
+- Sign in with _Read_ when you only want the assistant to read, and with one workspace when it only needs one.
 - Don't run the AI Inbx server beside tools that can publish data elsewhere in an unattended session.
 
 Building an agent that answers mail on its own is a different job. See [Email agents](../integrations/agents.md).
@@ -549,23 +555,31 @@ An API key used as the credential stops when the key is deleted.
 
 **The sign-in window never opens, or it keeps asking**
 
-Reconnect from the client: `/mcp` in Claude Code, the MCP settings in Cursor or VS Code. A client going through `mcp-remote` keeps its sign-ins in `~/.mcp-auth`; delete that folder and connect again.
+Reconnect from the client: `/mcp` in Claude Code, the MCP settings in Cursor
+or VS Code. A client going through `mcp-remote` keeps its sign-ins in
+`~/.mcp-auth`; delete that folder and connect again.
 
 **A tool answers forbidden**
 
-Either your role in that workspace does not allow the operation, or the access you chose when signing in does not. Connect again to choose more; the consent page starts from what the app has.
+Either your role in that workspace does not allow the operation, or the
+access you chose when signing in does not. Connect again to choose more; the
+consent page starts from what the app has.
 
 **It acted in the wrong workspace**
 
-With several workspaces the assistant names one on every call. Tell it which, by name or slug, or sign in with only the one you want.
+With several workspaces the assistant names one on every call. Tell it
+which, by name or slug, or sign in with only the one you want.
 
 **An answer says it was cut**
 
-One answer is capped at about 10,000 tokens, since clients cut longer ones on their own and without saying so. Lists are paged; ask for fewer items at a time, or for one email instead of a whole thread.
+One answer is capped at about 10,000 tokens, since clients cut longer ones
+on their own and without saying so. Lists are paged; ask for fewer items at
+a time, or for one email instead of a whole thread.
 
 **It cannot connect from a company network**
 
-Allow `mcp.aiinbx.com` and `aiinbx.com` (for signing in) through the proxy or firewall.
+Allow `mcp.aiinbx.com` and `aiinbx.com` (for signing in) through the proxy
+or firewall.
 
 ## Related
 

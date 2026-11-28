@@ -11,8 +11,10 @@ The workspace a request acts in: its name, and the defaults new domains start wi
 | Method | Operation | Path |
 | --- | --- | --- |
 | `GET` | [List workspaces](endpoints/workspace/list-workspaces.md) | `/workspaces` |
+| `POST` | [Create a workspace](endpoints/workspace/create-workspace.md) | `/workspaces` |
 | `GET` | [Retrieve the workspace](endpoints/workspace/retrieve-workspace.md) | `/workspace` |
 | `PATCH` | [Update the workspace](endpoints/workspace/update-workspace.md) | `/workspace` |
+| `POST` | [Go live](endpoints/workspace/go-live-workspace.md) | `/workspace/go-live` |
 
 ## Request essentials [#request-essentials]
 

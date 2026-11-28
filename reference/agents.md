@@ -10,19 +10,20 @@ To have a coding agent do the whole setup, hand it the [agent skills](../skills.
 
 ## Sources
 
-| Resource | Purpose |
-| --- | --- |
-| [llms.txt](https://docs.aiinbx.com/llms.txt) | Index of documentation and generated API reference pages |
-| [llms-full.txt](https://docs.aiinbx.com/llms-full.txt) | Combined documentation for tools that need one document |
+| Resource                                                       | Purpose                                                                             |
+| -------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| [llms.txt](https://docs.aiinbx.com/llms.txt)                   | Index of documentation and generated API reference pages                            |
+| [llms-full.txt](https://docs.aiinbx.com/llms-full.txt)         | Combined documentation for tools that need one document                             |
 | [OpenAPI document](https://api.aiinbx.com/api/v2/openapi.json) | API v2 paths, methods, security requirements, request schemas, and response schemas |
-| [Quickstart Markdown](../quickstart.md) | Setup and a first send-and-reply flow |
-| [Production guide Markdown](../guides/production.md) | Reliability and application responsibilities |
+| [Quickstart Markdown](../quickstart.md)                          | Setup and a first send-and-reply flow                                               |
+| [Sandbox Markdown](../guides/sandbox.md)                         | A workspace with no account or plan, simulated mail, and its limits                 |
+| [Production guide Markdown](../guides/production.md)             | Reliability and application responsibilities                                        |
 
 For an individual guide, append `.md` to its documentation path, for example `/guides/threads.md`. Prefer the index and relevant pages over loading the entire documentation into every prompt.
 
 ## Read in this order
 
-1. [Authentication](../authentication.md) and [Conventions](conventions.md) for base URL, scopes, pagination, and idempotency.
+1. [Authentication](../authentication.md) and [Conventions](conventions.md) for base URL, scopes, pagination, and idempotency, and [Sandbox](../guides/sandbox.md) for building without an account.
 2. The relevant task guide and [TypeScript](../sdks/typescript.md) or [Python](../sdks/python.md) SDK reference.
 3. The operation's [API reference](../api/README.md) for exact fields and supported response codes.
 4. [Webhook verification](../webhooks/verifying.md), the relevant [event schema](../webhooks/events/README.md), and the [production guide](../guides/production.md) for asynchronous workflows.
@@ -33,9 +34,10 @@ The API reference is generated from the shared API contract. Use it for wire-for
 
 - Base URL: `https://api.aiinbx.com/api/v2`.
 - Authentication: `Authorization: Bearer <key>`. Keep credentials server-side.
+- No account is needed to start: `POST /sandboxes` takes no credential and returns a sandbox workspace with a `full` key. Mail in a sandbox stays inside AI Inbx; `reply@simulator.aiinbx.com` answers each email it is sent, once, and `POST /sandbox/emails` writes inbound mail in. `POST /claim-links` hands the workspace to a person, who chooses a plan. The sandbox's keys keep working after the claim with the owner's rights, so either the person or the agent with its key (`POST /workspace/go-live`) goes live once a plan is there.
 - Assistants and coding agents can skip the SDK: the [MCP server](../mcp/README.md) at `https://mcp.aiinbx.com/mcp` or the [CLI](../cli.md), signed in with OAuth. For an [inbox](../guides/agent-inbox.md) of their own, the inbox server at `https://mcp.aiinbx.com/inbox` or `aiinbx login --inbox`.
 - Packages: `aiinbx` for both TypeScript and Python. Both clients read `AI_INBX_API_KEY`.
-- Sending requires a verified domain or an active connected mailbox.
+- Sending requires a verified domain or an active connected mailbox. Every workspace has a provided domain, `<slug>.aiinbx.app`, verified from the start.
 - Use `emails.send` to compose an email, `threads.reply` to answer a conversation, and `threads.forward` to send a transcript to new recipients.
 - A successful send response is not proof of inbox delivery. Inspect status, suppressions, pacing, and subsequent events.
 - Lists are paginated. A thread's messages paginate separately from the thread list.
@@ -69,5 +71,6 @@ Enforce customer ownership before accessing workspace resources.
 
 Identify required setup and clearly label application-specific
 queue, database, and model integrations. Validate the integration
-with mocks or controlled test recipients before enabling live sends.
+in a sandbox workspace with reply@simulator.aiinbx.com and
+simulated inbound mail before the workspace goes live.
 ```

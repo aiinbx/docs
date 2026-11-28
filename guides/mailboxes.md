@@ -10,15 +10,17 @@ That's the difference from a [domain](domains.md), which needs DNS access and ta
 
 Reach for it when the address already has an inbox somewhere — a rep's work account, a founder's inbox — and the mail should read as coming from that person.
 
+Mailboxes connect in a live workspace. In a [sandbox](sandbox.md), connecting one or registering an OAuth app answers `403` [`sandbox_unavailable`](../reference/errors.md#sandbox_unavailable); build against a domain there, and connect mailboxes once the workspace has [gone live](going-live.md).
+
 ## Connecting a mailbox
 
 Three ways in, ordered by how much of the flow you own. They all end the same way: the person approves at Google or Microsoft, the mailbox lands in your workspace, and [`mailbox.connected`](../webhooks/events/mailbox-connected.md) fires.
 
-| | You write | Your users see | Needs |
-| --- | --- | --- | --- |
-| [Hosted page](#hosted-page) | Nothing — share a link | A page in your brand, then "you're connected" | Your own [OAuth app](#your-own-oauth-app) |
-| [Connect link](#connect-link) | A URL on a button | Only the provider's consent screen, then your page | Your own OAuth app, plus a registered return URL |
-| [API](#api) | A server-side call per connection | Only the provider's consent screen, then your page | Your own OAuth app, plus a `full` API key |
+|                               | You write                         | Your users see                                     | Needs                                            |
+| ----------------------------- | --------------------------------- | -------------------------------------------------- | ------------------------------------------------ |
+| [Hosted page](#hosted-page)   | Nothing — share a link            | A page in your brand, then "you're connected"      | Your own [OAuth app](#your-own-oauth-app)        |
+| [Connect link](#connect-link) | A URL on a button                 | Only the provider's consent screen, then your page | Your own OAuth app, plus a registered return URL |
+| [API](#api)                   | A server-side call per connection | Only the provider's consent screen, then your page | Your own OAuth app, plus a `full` API key        |
 
 ### Hosted page
 
@@ -70,7 +72,9 @@ https://aiinbx.com/connect/<slug>/start?return_to=<url>&ref=<id>
     <a href={connectUrl.href}>Connect your Gmail</a>
     ```
     ```html HTML
-    <a href="https://aiinbx.com/connect/acme/start?return_to=https%3A%2F%2Fapp.example.com%2Fsettings%2Fmailboxes&ref=user_8812">
+    <a
+      href="https://aiinbx.com/connect/acme/start?return_to=https%3A%2F%2Fapp.example.com%2Fsettings%2Fmailboxes&ref=user_8812"
+    >
       Connect your Gmail
     </a>
     ```
@@ -80,11 +84,11 @@ https://aiinbx.com/connect/<slug>/start?return_to=<url>&ref=<id>
 
     They come back to `return_to` with the result appended:
 
-    | Query | When | Value |
-    | --- | --- | --- |
-    | `mailbox` | Connected | The new mailbox's `mbx_…` id |
-    | `connected` | Connected | The address they authorized |
-    | `error` | Declined or failed | What went wrong, e.g. `access_denied` |
+    | Query       | When               | Value                                 |
+    | ----------- | ------------------ | ------------------------------------- |
+    | `mailbox`   | Connected          | The new mailbox's `mbx_…` id          |
+    | `connected` | Connected          | The address they authorized           |
+    | `error`     | Declined or failed | What went wrong, e.g. `access_denied` |
 
     Fine for showing a "connected" state on the page. Not proof that it is live — see the last step. It is where you decide whose mailbox it is, though: `return_to` is a page of yours, opened with your own session.
 
@@ -162,11 +166,11 @@ console.log(mailbox.address, mailbox.state, mailbox.last_sync_at)
 mailbox = client.mailboxes.retrieve("mbx_...")
 print(mailbox["address"], mailbox["state"])
 ```
-| State | Meaning | What to do |
-| --- | --- | --- |
-| `active` | Syncing normally. | Nothing. |
+| State          | Meaning                                                                              | What to do                                          |
+| -------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------- |
+| `active`       | Syncing normally.                                                                    | Nothing.                                            |
 | `needs_reauth` | The grant expired or was revoked — password change, admin policy, manual revocation. | Prompt the customer through the connect flow again. |
-| `disconnected` | Removed, by you or by them. | Reconnect if they want it back. |
+| `disconnected` | Removed, by you or by them.                                                          | Reconnect if they want it back.                     |
 
 `state_reason` carries the provider's explanation when there is one. Both transitions are also webhooks — [`mailbox.needs_reauth`](../webhooks/events/mailbox-needs-reauth.md) and [`mailbox.disconnected`](../webhooks/events/mailbox-disconnected.md) — which is the right place to trigger a re-authorization prompt rather than discovering it on the next failed send. The workspace's owners and admins also get an email when a mailbox needs re-authorization, together with whatever else changed rather than one per mailbox, at most one an hour (a customer's mailbox in a [space](spaces.md) in the daily summary) — each of them at the level they picked under Settings → Notifications.
 
@@ -266,14 +270,14 @@ Secrets can be rotated with `oauthApps.update`; the old value is replaced immedi
 
 Not a question of whose address it is — either one can be yours or your customer's. A domain you add on a customer's behalf, walking them through the DNS records, is an ordinary domain. What differs is what you need from them and what you get.
 
-| | [Domain](domains.md) | Mailbox |
-| --- | --- | --- |
-| Needs | Access to the domain's DNS | One person clicking approve |
-| Covers | Every address on the domain | One existing inbox, and its aliases |
-| Mail is handled by | AI Inbx | The existing Google or Microsoft account, synced |
-| Setup | Publish records, wait for DNS | OAuth consent, live in seconds |
-| Receiving | The `INBOUND` MX record | Provider sync |
-| Breaks when | The records change or lapse | The grant is revoked |
+|                    | [Domain](domains.md)     | Mailbox                                          |
+| ------------------ | ----------------------------- | ------------------------------------------------ |
+| Needs              | Access to the domain's DNS    | One person clicking approve                      |
+| Covers             | Every address on the domain   | One existing inbox, and its aliases              |
+| Mail is handled by | AI Inbx                       | The existing Google or Microsoft account, synced |
+| Setup              | Publish records, wait for DNS | OAuth consent, live in seconds                   |
+| Receiving          | The `INBOUND` MX record       | Provider sync                                    |
+| Breaks when        | The records change or lapse   | The grant is revoked                             |
 
 The deciding question is usually whether the address already receives mail somewhere. An address on a live Google Workspace or Microsoft 365 domain has an inbox already, and pointing the MX record at AI Inbx would take that over for the whole domain — connect the mailbox instead. A domain with nowhere for its mail to go yet, or a subdomain created for the purpose, is the domain case.
 

@@ -160,8 +160,10 @@ Control send rate, hours, and queue flow.
 The workspace a request acts in: its name, and the defaults new domains start with.
 
 - [`GET /workspaces`](workspace/list-workspaces.md) — List workspaces.
+- [`POST /workspaces`](workspace/create-workspace.md) — Create a workspace.
 - [`GET /workspace`](workspace/retrieve-workspace.md) — Retrieve the workspace.
 - [`PATCH /workspace`](workspace/update-workspace.md) — Update the workspace.
+- [`POST /workspace/go-live`](workspace/go-live-workspace.md) — Go live.
 
 ## Members
 
@@ -173,3 +175,12 @@ Who is in the workspace, what each of them may do, and the invitations waiting t
 - [`GET /invitations`](members/list-invitations.md) — List invitations.
 - [`POST /invitations`](members/create-invitation.md) — Invite someone.
 - [`DELETE /invitations/{invitation_id}`](members/cancel-invitation.md) — Cancel an invitation.
+
+## Sandbox
+
+Workspaces that run the whole API with simulated mail: no mail is delivered, none arrives from outside, and nothing is billed. Webhooks still go out, marked `sandbox: true`. Every new workspace starts as one. An agent can create one without an account and hand it to a person to claim.
+
+- [`POST /sandboxes`](sandbox/create-sandbox.md) — Create a sandbox.
+- [`POST /claim-links`](sandbox/create-claim-link.md) — Create a claim link.
+- [`POST /sandbox/emails`](sandbox/simulate-inbound-email.md) — Simulate an inbound email.
+- [`POST /sandbox/emails/{email_id}/reply`](sandbox/simulate-reply.md) — Simulate a reply.

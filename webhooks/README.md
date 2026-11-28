@@ -69,6 +69,7 @@ Every delivery is a `POST` with a JSON envelope:
   "type": "email.received",
   "created_at": "2026-09-01T10:31:04Z",
   "space_id": null,
+  "sandbox": false,
   "data": {}
 }
 ```
@@ -78,6 +79,7 @@ Every delivery is a `POST` with a JSON envelope:
 | `type` | `string` | - | An event type listed in the event reference. |
 | `created_at` | `string` | - | When the event happened, RFC 3339. |
 | `space_id` | `string \| null` | - | The space the resource is in — the email's, thread's, domain's or mailbox's. null is the workspace itself, and all a workspace without spaces ever sees. |
+| `sandbox` | `boolean` | - | true when the event happened in a sandbox workspace, where no mail is delivered or arrives from outside. See Sandbox. |
 | `data` | `object` | - | Varies by type. |
 
 | Header             | Value                                                               |
@@ -198,13 +200,13 @@ A customer who needs events delivered to a system of their own gets them from yo
 
 A failed delivery is retried on a fixed schedule, with ±20% jitter, inside a **24-hour window**:
 
-| Attempt | Roughly after the previous |
-| ------- | -------------------------- |
-| 2       | 1 minute                   |
-| 3       | 5 minutes                  |
-| 4       | 30 minutes                 |
-| 5       | 2 hours                    |
-| 6       | 6 hours                    |
+| Attempt | Roughly after the previous                |
+| ------- | ----------------------------------------- |
+| 2       | 1 minute                                  |
+| 3       | 5 minutes                                 |
+| 4       | 30 minutes                                |
+| 5       | 2 hours                                   |
+| 6       | 6 hours                                   |
 | 7       | 24 hours, capped at the delivery deadline |
 
 Each next attempt is capped at 24 hours after the delivery was created, so the final interval may be shorter than the table shows. After the attempt budget is exhausted, or an attempt fails at or after that deadline, the delivery is marked `failed`. Inspect and replay failed deliveries after resolving the cause.
@@ -276,7 +278,12 @@ let after = await loadCheckpoint() // the last created_at you processed
 for await (const event of aiinbx.events.list({
   order: "asc",
   after: overlap(after),
-  type: ["email.delivered", "email.bounced", "email.complained", "email.failed"],
+  type: [
+    "email.delivered",
+    "email.bounced",
+    "email.complained",
+    "email.failed",
+  ],
 })) {
   await enqueueOnce(event.id, event) // the same dedupe your webhook handler uses
   after = event.created_at
@@ -347,6 +354,8 @@ The response tells you what your endpoint actually did — status code, duration
 > `payload` is whatever you put in it. A test event's `data` won't match the real shape unless you make it, which is deliberate — it lets you probe how your handler behaves on unexpected input.
 
 A test event is about no message. On a [`full`](#full-payloads) endpoint, the `data.email` of an `email.received` or `email.sent` test is the `email` you put in `payload`, or a sample email when you put none — so a test shows the whole shape either way.
+
+In a [sandbox](../guides/sandbox.md#limits), each test counts as one of its emails for the day. Once they are used up, a test fails with `429` [`sandbox_limit_reached`](../reference/errors.md#sandbox_limit_reached).
 
 ## Rotating the secret
 

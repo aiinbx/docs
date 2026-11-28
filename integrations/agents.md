@@ -6,7 +6,7 @@ Build an AI email agent with signed webhooks, conversation threads, human review
 
 An email agent receives a message, reads the conversation, decides whether to respond, and sends a reply. AI Inbx provides messages, threads, and signed events. Your application owns the decision, business context, and recovery of the workflow.
 
-Start with the [quickstart](../quickstart.md) to configure a sender, install the SDK, and receive a verified webhook. For an overview of the email infrastructure and controls available to your agent, see [Email infrastructure for AI agents](https://aiinbx.com/use-cases/ai-email-agent).
+Start with the [quickstart](../quickstart.md) to get a sandbox workspace, install the SDK, and receive a verified webhook. For an overview of the email infrastructure and controls available to your agent, see [Email infrastructure for AI agents](https://aiinbx.com/use-cases/ai-email-agent).
 
 For coding-agent access to these docs, see [Documentation for agents](../reference/agents.md). An assistant that only needs to send and read mail, with no worker of your own, can connect to the [MCP server](../mcp/README.md) or the [CLI](../cli.md), or get an [inbox](../guides/agent-inbox.md) of its own through the inbox server.
 
@@ -28,7 +28,9 @@ async function handleEvent(event: WebhookEvent) {
 
   // Thread retrieval returns one page. Iterate to load all available messages.
   const messages = []
-  for await (const message of aiinbx.threads.iterateMessages(event.data.thread_id)) {
+  for await (const message of aiinbx.threads.iterateMessages(
+    event.data.thread_id
+  )) {
     messages.push(message)
   }
 
@@ -78,12 +80,12 @@ Prepared attachment text may be partial or unavailable. Check `preparation.statu
 
 Webhook deduplication and send idempotency solve different problems:
 
-| Mechanism | Responsibility |
-| --- | --- |
-| Unique event ID in durable storage | Avoid creating duplicate jobs for one event |
-| Recoverable worker claim | Resume processing if a worker crashes |
-| Persisted decision and payload | Keep retries consistent, including generated text |
-| Stable reply idempotency key | Avoid sending another email when a send response is lost |
+| Mechanism                                 | Responsibility                                                    |
+| ----------------------------------------- | ----------------------------------------------------------------- |
+| Unique event ID in durable storage        | Avoid creating duplicate jobs for one event                       |
+| Recoverable worker claim                  | Resume processing if a worker crashes                             |
+| Persisted decision and payload            | Keep retries consistent, including generated text                 |
+| Stable reply idempotency key              | Avoid sending another email when a send response is lost          |
 | Per-thread serialization or version check | Avoid conflicting replies to different events on one conversation |
 
 Mark work complete after its effects succeed. If a worker crashes after sending but before recording completion, retry with the saved body and key. Inspect the reply response for suppressions and pacing just as you would for a new send.
@@ -108,5 +110,22 @@ Use an authorized handoff address and persist the reason so retries keep the sam
 Retrieve account data, product knowledge, and customer permissions from your own systems. An email's claims about an order or account are not authorization to modify it.
 
 A reply can use a verified domain or a connected Gmail or Outlook mailbox. When automating a person's mailbox, make the scope of the automation and the route to human review clear in your product.
+
+## Test it in a sandbox
+
+Build the agent in a [sandbox](../guides/sandbox.md) workspace, where nothing it sends reaches a person. Write the mail it should handle into the sandbox, and the whole path runs as in production: ingest, threading, `stripped_text`, categories, the signed `email.received` to your endpoint, your worker, and the reply.
+
+```ts
+// A customer writes in: the worker should answer once, in the same thread.
+const inbound = await aiinbx.sandboxEmails.receive({
+  from: "Dana <dana@example.net>",
+  to: "support@yourapp.aiinbx.app",
+  subject: "Where is order 1042?",
+  text: "It was due on Monday and has not arrived.",
+})
+```
+Answer the agent's reply with `sandboxEmails.reply(emailId, { text })` to test a follow-up, or have the agent write to `reply@simulator.aiinbx.com`, which answers an email once and does not answer the agent's answer to its reply. To test the reply budget, answer each of the agent's replies with `sandboxEmails.reply` until the budget stops it. To test how the agent handles automated mail, pass `headers` to `sandboxEmails.receive`, such as `{ "Auto-Submitted": "auto-replied" }` for an out-of-office reply; to test your checks of the [authentication verdicts](../guides/receiving.md#authentication-verdicts), pass `verdicts`, such as `{ spf: "FAIL" }`. See [Headers and verdicts](../guides/sandbox.md#headers-and-verdicts). Check events with `event.sandbox` before your worker does anything outside the application, such as updating an order.
+
+When the agent behaves, [go live](../guides/going-live.md). Keys and webhook endpoints stay, and the test mail is cleared.
 
 Continue with [Threads](../guides/threads.md), [email.received](../webhooks/events/email-received.md), and [Going to production](../guides/production.md).

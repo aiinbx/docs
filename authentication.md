@@ -25,6 +25,17 @@ with AIInbx() as client:  # or AIInbx(api_key="...")
 ```
 A key belongs to one workspace, reaches every [space](guides/spaces.md) in it, and can never cross into another workspace. Keys are for your servers; a customer who needs the API goes through your product, never through AI Inbx directly.
 
+## Without an account
+
+`POST /sandboxes` is the one operation that takes no credential. It creates a [sandbox](guides/sandbox.md) workspace with no members and returns a `full` key for it, in `api_key.key`, once:
+
+```bash
+curl https://api.aiinbx.com/api/v2/sandboxes \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Yourapp"}'
+```
+The key works like any other. In a workspace nobody is a member of yet, it acts as an admin, except that it cannot invite people or go live. When a person [claims the workspace](guides/going-live.md#claim-a-sandbox), its keys become that person's keys and keep doing everything they did before, with the owner's rights; from then on they follow their creator's role like any key.
+
 ## Signed-in clients
 
 The [CLI](cli.md) and the [MCP servers](mcp/README.md) sign in with your account instead of a key. On the consent page you pick the workspaces and access, or, for an [inbox](guides/agent-inbox.md), the addresses it gets. They send the access token they get as the same bearer token. A token that reaches several workspaces names the one a request acts in with `AIInbx-Workspace: <workspace id>`; `GET /workspaces` lists them, and a request without it gets `400` [`workspace_required`](reference/errors.md#workspace_required).
@@ -71,7 +82,7 @@ API keys, members, invitations and workspace settings are admin-only on top of t
 
 ## Managing keys
 
-Keys are created in the [console](https://aiinbx.com/app) or through the API with a `full` key made by a current admin. The plaintext key is returned **once**, on the create call:
+Keys are created in the [console](https://aiinbx.com/app) or through the API with a `full` key made by a current admin, or a key of a sandbox nobody has claimed yet. The plaintext key is returned **once**, on the create call:
 
 ```ts TypeScript
 const created = await aiinbx.apiKeys.create({
